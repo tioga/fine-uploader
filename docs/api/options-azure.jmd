@@ -28,8 +28,8 @@ $(document).ready(function() {
 If you are using the Azure uploader, many of Fine Uploader's options are still
 present, and most of them still function the same way. However, some of the
 options are slightly different. This page will list any new or different options
-for the Azure uploader. Any option not listed here can be assumed to have the same
-behavior for the Traditional or Azure uploader.
+for the Azure uploader. **Any option not listed here can be assumed to have the same
+behavior for the Traditional or Azure uploader.**
 
 ## Core
 
@@ -68,8 +68,9 @@ alert("The [`request.customHeaders` option](options.html#request.customHeaders) 
 {{ api_parent_option("request", "request", "",
     (
         ("request.endpoint", "containerUrl", "URL for your Azure Blob Storage container.", "String", "null",),
-        ("request.params", "params", "Parameters passed along with each upload request.", "Object", "{}",),
         ("request.filenameParam", "filenameParam", "Part of the parameter name that contains the name of the associated file which may differ from the blob name. Prefixed with 'x-ms-meta-' by Fine Uploader.", "String", "qqfilename",),
+        ("request.params", "params", "Parameters passed along with each upload request.", "Object", "{}",),
+        ("request.putBlockListTimeout", "putBlockListTimeout", "Timeout for the put block list request sent to Azure. Overrides the [`request.timeout` option](options.html#request.timeout) if >= 0.", "Integer", "-1",),
     )
 )}}
 

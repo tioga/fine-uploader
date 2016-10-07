@@ -8,6 +8,7 @@ qq.azure.GetSas = function(o) {
 
     var requester,
         options = {
+            timeout: 0,
             cors: {
                 expected: false,
                 sendCredentials: false
@@ -43,6 +44,7 @@ qq.azure.GetSas = function(o) {
         acceptHeader: "application/json",
         validMethods: ["GET"],
         method: "GET",
+        timeout: options.timeout,
         successfulResponseCodes: {
             GET: [200]
         },

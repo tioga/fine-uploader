@@ -14,6 +14,7 @@ qq.UploadSuccessAjaxRequester = function(o) {
         pendingRequests = [],
         options = {
             method: "POST",
+            timeout: 0,
             endpoint: null,
             maxConnections: 3,
             customHeaders: {},
@@ -70,6 +71,7 @@ qq.UploadSuccessAjaxRequester = function(o) {
     requester = qq.extend(this, new qq.AjaxRequester({
         acceptHeader: "application/json",
         method: options.method,
+        timeout: options.timeout,
         endpointStore: {
             get: function() {
                 return options.endpoint;

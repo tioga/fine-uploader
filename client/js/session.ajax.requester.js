@@ -11,6 +11,7 @@ qq.SessionAjaxRequester = function(spec) {
 
     var requester,
         options = {
+            timeout: 0,
             endpoint: null,
             customHeaders: {},
             params: {},
@@ -45,6 +46,7 @@ qq.SessionAjaxRequester = function(spec) {
         acceptHeader: "application/json",
         validMethods: ["GET"],
         method: "GET",
+        timeout: options.timeout,
         endpointStore: {
             get: function() {
                 return options.endpoint;

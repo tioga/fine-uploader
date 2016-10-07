@@ -8,6 +8,7 @@ qq.Session = function(spec) {
     "use strict";
 
     var options = {
+        timeout: 0,
         endpoint: null,
         params: {},
         customHeaders: {},

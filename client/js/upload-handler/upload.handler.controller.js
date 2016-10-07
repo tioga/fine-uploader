@@ -14,6 +14,7 @@ qq.UploadHandlerController = function(o, namespace) {
         chunking, preventRetryResponse, log, handler,
 
     options = {
+        timeout: 0,
         paramsStore: {},
         maxConnections: 3, // maximum number of concurrent uploads
         chunking: {

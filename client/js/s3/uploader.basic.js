@@ -14,7 +14,10 @@
                 accessKey: null,
 
                 // padding, in milliseconds, to add to the x-amz-date header & the policy expiration date
-                clockDrift: 0
+                clockDrift: 0,
+
+                // timeout for complete multipart request, overrides request.timeout if >= 0
+                completeMultipartTimeout: -1
             },
 
             objectProperties: {
@@ -205,6 +208,7 @@
                     objectProperties: this._options.objectProperties,
                     signature: this._options.signature,
                     clockDrift: this._options.request.clockDrift,
+                    completeMultipartTimeout: this._options.request.completeMultipartTimeout,
                     // pass size limit validation values to include in the request so AWS enforces this server-side
                     validation: {
                         minSizeLimit: this._options.validation.minSizeLimit,

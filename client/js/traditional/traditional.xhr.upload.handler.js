@@ -16,6 +16,7 @@ qq.traditional.XhrUploadHandler = function(spec, proxy) {
         getUuid = proxy.getUuid,
         log = proxy.log,
         multipart = spec.forceMultipart || spec.paramsInBody,
+        requestTimeout = spec.timeout,
 
         addChunkingSpecificParams = function(id, params, chunkData) {
             var size = getSize(id),
@@ -39,7 +40,8 @@ qq.traditional.XhrUploadHandler = function(spec, proxy) {
         allChunksDoneRequester = new qq.traditional.AllChunksDoneAjaxRequester({
             cors: spec.cors,
             endpoint: spec.chunking.success.endpoint,
-            log: log
+            log: log,
+            timeout: spec.chunking.success.timeout < 0 ? requestTimeout : spec.chunking.success.endpoint
         }),
 
         createReadyStateChangedHandler = function(id, xhr) {
@@ -204,6 +206,7 @@ qq.traditional.XhrUploadHandler = function(spec, proxy) {
 
             toSend = setParamsAndGetEntityToSend(params, xhr, chunkData.blob, id);
             setUploadHeaders(id, xhr);
+            xhr.timeout = requestTimeout;
             xhr.send(toSend);
 
             return promise;
@@ -219,6 +222,7 @@ qq.traditional.XhrUploadHandler = function(spec, proxy) {
             params = spec.paramsStore.get(id);
             toSend = setParamsAndGetEntityToSend(params, xhr, fileOrBlob, id);
             setUploadHeaders(id, xhr);
+            xhr.timeout = requestTimeout;
             xhr.send(toSend);
 
             return promise;

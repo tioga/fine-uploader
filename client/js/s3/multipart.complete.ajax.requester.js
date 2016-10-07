@@ -13,6 +13,7 @@ qq.s3.CompleteMultipartAjaxRequester = function(o) {
         pendingCompleteRequests = {},
         options = {
             method: "POST",
+            timeout: 0,
             contentType: "text/xml",
             endpointStore: null,
             signatureSpec: null,
@@ -28,6 +29,7 @@ qq.s3.CompleteMultipartAjaxRequester = function(o) {
 
     // Transport for requesting signatures (for the "Complete" requests) from the local server
     getSignatureAjaxRequester = new qq.s3.RequestSigner({
+        timeout: options.timeout,
         endpointStore: options.endpointStore,
         signatureSpec: options.signatureSpec,
         cors: options.cors,
@@ -142,6 +144,7 @@ qq.s3.CompleteMultipartAjaxRequester = function(o) {
 
     requester = qq.extend(this, new qq.AjaxRequester({
         method: options.method,
+        timeout: options.timeout,
         contentType: "application/xml; charset=UTF-8",
         endpointStore: options.endpointStore,
         maxConnections: options.maxConnections,

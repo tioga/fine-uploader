@@ -79,6 +79,7 @@ alert("The `chunking.success.endpoint` option **only** applies to traditional up
         ("chunking.paramNames.totalParts", "paramNames.totalParts", "Name of the parameter passed with a chunked request that specifies the total number of chunks associated with the `File` or `Blob`.", "String", "qqtotalparts",),
 
         ("chunking.success.endpoint", "success.endpoint", "Endpoint to send a POST after all chunks have been successfully uploaded for each file.  Required if the [`concurrent.enabled` option](#chunking.concurrent.enabled) is set.", "String", "null",),
+        ("chunking.success.timeout", "success.timeout", "Timeout for the request to your success endpoint. If >= 0, overrides the [`request.timeout` option](#request.timeout).", "Integer", "-1",),
     )
 )
 }}
@@ -179,6 +180,7 @@ alert("The `chunking.success.endpoint` option **only** applies to traditional up
         ("request.method", "method", "Specify a method to use when sending files to a traditional endpoint.  This option is ignored in older browsers (such as IE 9 and older).", "String", "POST",),
         ("request.params", "params", "The parameters that shall be sent with each upload request.", "Object", "{}",),
         ("request.paramsInBody", "paramsInBody", "Enable or disable sending parameters in the request body. If `false`, parameters are sent in the URL. Otherwise, parameters are sent in the request body.", "Boolean", "true",),
+        ("request.timeout", "timeout", "Timeout for all HTTP requests sent by Fine Uploader. A value of 0 means no timeout.", "Integer", "0",),
         ("request.uuidName", "uuidName", "The name of the parameter the uniquely identifies each associated item. The value is a [Level 4 UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_.28random.29).", "String", "qquuid",),
         ("request.totalFileSizeName", "totalFileSizeName", "The name of the parameter passed that specifies the total file size in bytes.", "String", "qqtotalfilesize",),
     )

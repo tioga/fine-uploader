@@ -15,7 +15,8 @@ qq(window).attach("load", function() {
             fileSizeOnSubmit: true
         },
         request: {
-            endpoint: "/test/dev/handlers/vendor/fineuploader/php-traditional-server/endpoint.php"
+            endpoint: "/test/dev/handlers/vendor/fineuploader/php-traditional-server/endpoint.php",
+            timeout: 5000
         },
         deleteFile: {
             enabled: true,
@@ -26,7 +27,7 @@ qq(window).attach("load", function() {
             }
         },
         chunking: {
-            enabled: true,
+            enabled: false,
             concurrent: {
                 enabled: false
             },
@@ -95,7 +96,8 @@ qq(window).attach("load", function() {
             accessKey: "AKIAIXVR6TANOGNBGANQ"
         },
         signature: {
-            endpoint: "/test/dev/handlers/vendor/fineuploader/php-s3-server/endpoint.php"
+            endpoint: "/test/dev/handlers/vendor/fineuploader/php-s3-server/endpoint.php",
+            version: 4
         },
         uploadSuccess: {
             endpoint: "/test/dev/handlers/vendor/fineuploader/php-s3-server/endpoint.php?success"

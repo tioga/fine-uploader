@@ -29,8 +29,10 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
         signature = qq.extend({region: region, drift: clockDrift}, spec.signature),
         handler = this,
         credentialsProvider = spec.signature.credentialsProvider,
+        timeout = spec.timeout,
+        completeMultipartTimeout = spec.completeMultipartTimeout < 0 ? timeout : spec.completeMultipartTimeout,
 
-        chunked = {
+            chunked = {
             // Sends a "Complete Multipart Upload" request and then signals completion of the upload
             // when the response to this request has been parsed.
             combine: function(id) {
@@ -114,6 +116,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
                         handler._registerProgressHandler(id, chunkIdx, chunkData.size);
                         upload.track(id, xhr, chunkIdx).then(promise.success, promise.failure);
                         xhr.open("PUT", url, true);
+                        xhr.timeout = timeout;
 
                         qq.each(headers, function(name, val) {
                             xhr.setRequestHeader(name, val);
@@ -188,6 +191,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
 
         requesters = {
             abortMultipart: new qq.s3.AbortMultipartAjaxRequester({
+                timeout: timeout,
                 endpointStore: endpointStore,
                 signatureSpec: signature,
                 cors: spec.cors,
@@ -204,6 +208,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
             }),
 
             completeMultipart: new qq.s3.CompleteMultipartAjaxRequester({
+                timeout: completeMultipartTimeout,
                 endpointStore: endpointStore,
                 signatureSpec: signature,
                 cors: spec.cors,
@@ -220,6 +225,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
             }),
 
             initiateMultipart: new qq.s3.InitiateMultipartAjaxRequester({
+                timeout: timeout,
                 filenameParam: filenameParam,
                 endpointStore: endpointStore,
                 paramsStore: paramsStore,
@@ -247,6 +253,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
             }),
 
             policySignature: new qq.s3.RequestSigner({
+                timeout: timeout,
                 expectingPolicy: true,
                 signatureSpec: signature,
                 cors: spec.cors,
@@ -254,6 +261,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
             }),
 
             restSignature: new qq.s3.RequestSigner({
+                timeout: timeout,
                 endpointStore: endpointStore,
                 signatureSpec: signature,
                 cors: spec.cors,
@@ -309,6 +317,7 @@ qq.s3.XhrUploadHandler = function(spec, proxy) {
                 // Delegate to a function the sets up the XHR request and notifies us when it is ready to be sent, along w/ the payload.
                 simple.setup(id, xhr, fileOrBlob).then(function(toSend) {
                     log("Sending upload request for " + id);
+                    xhr.timeout = timeout;
                     xhr.send(toSend);
                 }, promise.failure);
 

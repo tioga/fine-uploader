@@ -8,6 +8,7 @@ qq.azure.DeleteBlob = function(o) {
     var requester,
         method = "DELETE",
         options = {
+            timeout: 0,
             endpointStore: {},
             onDelete: function(id) {},
             onDeleteComplete: function(id, xhr, isError) {},
@@ -37,6 +38,7 @@ qq.azure.DeleteBlob = function(o) {
 
     qq.extend(this, {
         method: method,
+        timeout: options.timeout,
         send: function(id) {
             options.log("Submitting Delete Blob request for " + id);
 

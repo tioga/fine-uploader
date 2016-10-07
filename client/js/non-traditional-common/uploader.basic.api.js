@@ -82,6 +82,7 @@
                 successAjaxRequester = new qq.UploadSuccessAjaxRequester({
                     endpoint: successEndpoint,
                     method: successMethod,
+                    timeout: this._options.request.timeout,
                     customHeaders: successCustomHeaders,
                     cors: cors,
                     log: qq.bind(this.log, this)

@@ -10,7 +10,8 @@ qq.azure.PutBlockList = function(o) {
         promises = {},
         options = {
             getBlobMetadata: function(id) {},
-            log: function(str, level) {}
+            log: function(str, level) {},
+            timeout: 0
         },
         endpoints = {},
         endpointHandler = {
@@ -24,6 +25,7 @@ qq.azure.PutBlockList = function(o) {
     requester = qq.extend(this, new qq.AjaxRequester({
         validMethods: [method],
         method: method,
+        timeout: options.timeout,
         successfulResponseCodes: (function() {
             var codes = {};
             codes[method] = [201];

@@ -14,6 +14,7 @@ qq.s3.InitiateMultipartAjaxRequester = function(o) {
         options = {
             filenameParam: "qqfilename",
             method: "POST",
+            timeout: 0,
             endpointStore: null,
             paramsStore: null,
             signatureSpec: null,
@@ -33,6 +34,7 @@ qq.s3.InitiateMultipartAjaxRequester = function(o) {
     qq.extend(options, o);
 
     getSignatureAjaxRequester = new qq.s3.RequestSigner({
+        timeout: options.timeout,
         endpointStore: options.endpointStore,
         signatureSpec: options.signatureSpec,
         cors: options.cors,
@@ -143,6 +145,7 @@ qq.s3.InitiateMultipartAjaxRequester = function(o) {
 
     requester = qq.extend(this, new qq.AjaxRequester({
         method: options.method,
+        timeout: options.timeout,
         contentType: null,
         endpointStore: options.endpointStore,
         maxConnections: options.maxConnections,

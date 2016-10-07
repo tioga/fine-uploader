@@ -444,6 +444,7 @@
 
             return new qq.DeleteFileAjaxRequester({
                 method: this._options.deleteFile.method.toUpperCase(),
+                timeout: this._options.request.timeout,
                 maxConnections: this._options.maxConnections,
                 uuidParamName: this._options.request.uuidName,
                 customHeaders: this._deleteFileCustomHeadersStore,
@@ -659,6 +660,7 @@
             var self = this,
                 lastOnProgress = {},
                 options = {
+                    timeout: this._options.request.timeout,
                     debug: this._options.debug,
                     maxConnections: this._options.maxConnections,
                     cors: this._options.cors,
@@ -1635,6 +1637,7 @@
 
                     options.log = qq.bind(this.log, this);
                     options.addFileRecord = qq.bind(this._addCannedFile, this);
+                    options.timeout = this._options.request.timeout;
 
                     this._session = new qq.Session(options);
                 }

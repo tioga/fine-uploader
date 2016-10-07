@@ -18,7 +18,8 @@ qq.traditional.AllChunksDoneAjaxRequester = function(o) {
                 sendCredentials: false
             },
             endpoint: null,
-            log: function(str, level) {}
+            log: function(str, level) {},
+            timeout: 0
         },
         promises = {},
         endpointHandler = {
@@ -33,6 +34,7 @@ qq.traditional.AllChunksDoneAjaxRequester = function(o) {
         acceptHeader: "application/json",
         validMethods: [method],
         method: method,
+        timeout: options.timeout,
         endpointStore: endpointHandler,
         allowXRequestedWithAndCacheControl: false,
         cors: options.cors,

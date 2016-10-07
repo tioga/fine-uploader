@@ -23,6 +23,7 @@
                 method: "POST",
                 params: {},
                 paramsInBody: true,
+                timeout: 0,
                 totalFileSizeName: "qqtotalfilesize",
                 uuidName: "qquuid"
             },
@@ -111,7 +112,8 @@
                 partSize: 2000000,
                 // only relevant for traditional endpoints, only required when concurrent.enabled === true
                 success: {
-                    endpoint: null
+                    endpoint: null,
+                    timeout: -1 // overrides request.timeout if >= 0
                 }
             },
 

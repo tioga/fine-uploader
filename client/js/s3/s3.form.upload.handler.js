@@ -30,6 +30,7 @@ qq.s3.FormUploadHandler = function(options, proxy) {
         successRedirectUrl = options.iframeSupport.localBlankPagePath,
         credentialsProvider = options.signature.credentialsProvider,
         getSignatureAjaxRequester = new qq.s3.RequestSigner({
+            timeout: options.timeout,
             signatureSpec: signature,
             cors: options.cors,
             log: log

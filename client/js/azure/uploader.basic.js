@@ -13,6 +13,11 @@
         }
 
         var options = {
+            request: {
+                // timeout for put block list request, overrides request.timeout if >= 0
+                putBlockListTimeout: -1
+            },
+
             signature: {
                 endpoint: null,
 
@@ -88,9 +93,10 @@
         _createUploadHandler: function() {
             return qq.FineUploaderBasic.prototype._createUploadHandler.call(this,
                 {
-                    signature: this._options.signature,
+                    deleteBlob: qq.bind(this._deleteBlob, this, true),
                     onGetBlobName: qq.bind(this._determineBlobName, this),
-                    deleteBlob: qq.bind(this._deleteBlob, this, true)
+                    putBlockListTimeout: this._options.request.putBlockListTimeout,
+                    signature: this._options.signature
                 },
                 "azure");
         },
@@ -164,6 +170,7 @@
                     }
                 },
                 deleteBlob = new qq.azure.DeleteBlob({
+                    timeout: this._options.request.timeout,
                     endpointStore: deleteFileEndpointStore,
                     log: qq.bind(self.log, self),
                     onDelete: function(id) {
@@ -193,6 +200,7 @@
                     }
                 }),
                 getSas = new qq.azure.GetSas({
+                    timeout: this._options.request.timeout,
                     cors: this._options.cors,
                     customHeaders: this._options.signature.customHeaders,
                     endpointStore: {

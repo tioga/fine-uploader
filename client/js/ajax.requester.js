@@ -10,6 +10,7 @@ qq.AjaxRequester = function(o) {
             acceptHeader: null,
             validMethods: ["PATCH", "POST", "PUT"],
             method: "POST",
+            timeout: 0,
             contentType: "application/x-www-form-urlencoded",
             maxConnections: 3,
             customHeaders: {},
@@ -195,6 +196,7 @@ qq.AjaxRequester = function(o) {
 
         // The last parameter is assumed to be ignored if we are actually using `XDomainRequest`.
         xhr.open(method, url, true);
+        xhr.timeout = options.timeout;
 
         // Instruct the transport to send cookies along with the CORS request,
         // unless we are using `XDomainRequest`, which is not capable of this.

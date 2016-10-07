@@ -5,6 +5,7 @@ qq.DeleteFileAjaxRequester = function(o) {
     var requester,
         options = {
             method: "DELETE",
+            timeout: 0,
             uuidParamName: "qquuid",
             endpointStore: {},
             maxConnections: 3,
@@ -35,6 +36,7 @@ qq.DeleteFileAjaxRequester = function(o) {
         acceptHeader: "application/json",
         validMethods: ["POST", "DELETE"],
         method: options.method,
+        timeout: options.timeout,
         endpointStore: options.endpointStore,
         paramsStore: options.paramsStore,
         mandatedParams: getMandatedParams(),

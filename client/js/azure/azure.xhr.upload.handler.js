@@ -23,6 +23,8 @@ qq.azure.XhrUploadHandler = function(spec, proxy) {
         onGetBlobName = spec.onGetBlobName,
         getName = proxy.getName,
         getSize = proxy.getSize,
+        timeout = spec.timeout,
+        putBlockListTimeout = spec.putBlockListTimeout < 0 ? spec.timeout : spec.putBlockListTimeout,
 
         getBlobMetadata = function(id) {
             var params = paramsStore.get(id);
@@ -33,16 +35,19 @@ qq.azure.XhrUploadHandler = function(spec, proxy) {
         api = {
             putBlob: new qq.azure.PutBlob({
                 getBlobMetadata: getBlobMetadata,
-                log: log
+                log: log,
+                timeout: timeout
             }),
 
             putBlock: new qq.azure.PutBlock({
-                log: log
+                log: log,
+                timeout: timeout
             }),
 
             putBlockList: new qq.azure.PutBlockList({
                 getBlobMetadata: getBlobMetadata,
-                log: log
+                log: log,
+                timeout: putBlockListTimeout
             }),
 
             getSasForPutBlobOrBlock: new qq.azure.GetSas({
@@ -54,7 +59,8 @@ qq.azure.XhrUploadHandler = function(spec, proxy) {
                     }
                 },
                 log: log,
-                restRequestVerb: "PUT"
+                restRequestVerb: "PUT",
+                timeout: timeout
             })
         };
 

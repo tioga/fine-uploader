@@ -28,6 +28,7 @@ qq.s3.RequestSigner = function(o) {
         options = {
             expectingPolicy: false,
             method: "POST",
+            timeout: 0,
             signatureSpec: {
                 drift: 0,
                 credentialsProvider: {},
@@ -458,6 +459,7 @@ qq.s3.RequestSigner = function(o) {
     requester = qq.extend(this, new qq.AjaxRequester({
         acceptHeader: "application/json",
         method: options.method,
+        timeout: options.timeout,
         contentType: "application/json; charset=utf-8",
         endpointStore: {
             get: function() {
