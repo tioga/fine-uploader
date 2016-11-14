@@ -1,0 +1,1 @@
+qq.s3.setEndpoint("http://endpoint");
