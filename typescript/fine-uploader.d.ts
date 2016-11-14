@@ -670,8 +670,9 @@ declare namespace FineUploader {
     }
 
 
-
-
+    /**
+     * Contains Core options 
+     */
     interface CoreOptions {
         /**
          * Set to false if you want to be able to upload queued items later by calling the `uploadStoredFiles()` method
