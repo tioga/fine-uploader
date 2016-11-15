@@ -180,27 +180,6 @@ declare namespace FineUploader {
     }
 
     /**
-     * type for S3's bucket object property 
-     */
-    interface BucketFunction {
-        (id: number): Promise<any> | string;
-    }
-
-    /**
-     * type for S3's host object property 
-     */
-    interface HostFunction {
-        (id: number): Promise<any> | string;
-    }
-
-    /**
-     * type for S3's key object property 
-     */
-    interface KeyFunction {
-        (id: number): Promise<any> | string;
-    }
-
-    /**
      * formatFileName function type
      */
     interface FormatFileNameFuncton {
@@ -911,7 +890,7 @@ declare namespace FineUploader {
         /**
          * RequestOptions
          */
-        request?: RequestOptions;
+        request: RequestOptions;
         /**
          * ScalingOptions
          */
@@ -935,6 +914,343 @@ declare namespace FineUploader {
 
     }
 
+    /**
+     * function for showMessage option
+     */
+    interface ShowMessageFunction {
+        (message: string): Promise<any> | void;
+    }
+    /**
+     * function for showMessage option
+     */
+    interface ShowConfirmFunction {
+        (message: string): Promise<any> | void;
+    }
+    /**
+     * function for showMessage option
+     */
+    interface ShowPromptFunction {
+        (message: string, defaultValue: string | number): Promise<any> | void;
+    }
+
+    /**
+     * This interface defines UI specific options for the core DeleteFileOptions
+     */
+    interface UIDeleteFileOptions extends DeleteFileOptions {
+        /**
+         * The message displayed in the confirm delete dialog
+         * @default `'Are you sure you want to delete {filename}?'`
+         */
+        confirmMessage?: string;
+        /**
+         * The status message to appear next to a file that has failed to delete
+         * @default `'Delete failed'`
+         */
+        deletingFailedText?: string;
+        /**
+         * The status message to appear next to a file that is pending deletion
+         * @default `'Deleting...'`
+         */
+        deletingStatusText?: string;
+        /**
+         * If this value is set to `true`, the user will be required to confirm the file delete request via a confirmation dialog
+         * @default `false`
+         */
+        forceConfirm?: boolean;
+    }
+
+    /**
+     * UIDisplayOptions
+     */
+    interface UIDisplayOptions {
+        /**
+         * Enable or disable the display of the file size next to the file after it has been submitted
+         * @default `false`
+         */
+        fileSizeOnSubmit?: boolean;
+        /**
+         * When `true` batches of files are added to the top of the UI's file list. The default is to append file(s) to the bottom of the list
+         * @default `false`
+         */
+        prependFiles?: boolean;
+    }
+
+    /**
+     * dragAndDrop options
+     */
+    interface UIDragAndDropOptions {
+        /**
+         * Designate additional drop zones for file input
+         * @default `[]`
+         */
+        extraDropzones?: any[];
+        /**
+         * Include the path of dropped files (starting with the top-level dropped directory). This value will be sent along with the request as a qqpath parameter
+         * @default `false`
+         */
+        reportDirectoryPaths?: boolean;
+    }
+
+    /**
+     * failedUploadTextDisplay options
+     */
+    interface UIFailedUploadTextDisplay {
+        /**
+         * Enable or disable a tooltip that will display the full contents of the error message when the mouse pointer hovers over the failed item.
+         * @default `true`
+         */
+        enableTooltip?: boolean;
+        /**
+         * Set the message to display next to each failed file. 
+         * One of: 'default' which displays the failedUploadText, 'custom' which displays the error response from the server, or 'none' which displays no text
+         * @default `'default'`
+         */
+        mode?: string;
+        /**
+         * The property from the server response that contains the error text to display next to a failed item. Ignored unless `mode` is `'custom'`
+         * @default `'error'`
+         */
+        responseProperty?: string;
+    }
+
+    /**
+     * UIMessages
+     */
+    interface UIMessages extends Messages {
+        /**
+         * Text sent to `showMessage` when `multiple` is `false` and more than one file is dropped at once
+         * @default `'You may only drop one file.'`
+         */
+        tooManyFilesError?: string;
+        /**
+         * Text displayed to users who have ancient browsers
+         * @default `'Unrecoverable error - the browser does not permit uploading of any kind.'`
+         */
+        unsupportedBrowser?: string;
+    }
+
+    /**
+     * UIRetryOptions
+     */
+    interface UIRetryOptions extends RetryOptions {
+        /**
+         * The text of the note that will optionally appear next to the item during automatic retry attempts. 
+         * Ignored if `showAutoRetryNote` is false.
+         * @default `'Retrying {retryNum}/{maxAuto} ...'`
+         */
+        autoRetryNote?: string;
+        /**
+         * Enable or disable the showing of a button/link next to the failed item after all retry attempts have been exhausted. 
+         * Clicking the button/link will force the uploader to make another attempt
+         * @default `false`
+         */
+        showButton?: boolean;
+        /**
+         * Enable or disable a status message appearing next to the item during auto retry attempts
+         * @default `true`
+         */
+        showAutoRetryNote?: boolean;
+    }
+
+    /**
+     * thumbnails options
+     */
+    interface UIThumbnailsOptions {
+        /**
+         * Ignored if the current browser does not support image previews. 
+         * If you want to use an alternate library to resize the image, you must contribute a function for this option that returns a Promise. 
+         * Once the resize is complete, your promise must be fulfilled. 
+         * You may, of course, reject your returned Promise is the resize fails in some way
+         * @default `undefined`
+         */
+        customResizer?: CustomResizerCallBack;
+        /**
+         * Maximum number of previews to render per Fine Uploader instance. 
+         * A call to the reset method resets this value as well
+         * @default `0`
+         */
+        maxCount?: number;
+        /**
+         * The amount of time, in milliseconds, to pause between each preview generation process. 
+         * This is in place to prevent the UI thread from locking up for a continuously long period of time, as preview generation can be a resource-intensive process
+         * @default `750`
+         */
+        timeBetweenThumbs?: number;
+        /**
+         * 
+         */
+        placeholders?: UIThumbnailsPlaceholderOptions;
+    }
+
+    /**
+     * UIThumbnailsPlaceholderOptions
+     */
+    interface UIThumbnailsPlaceholderOptions {
+        /**
+         * Absolute URL or relative path to the image to display if the preview/thumbnail could not be generated/displayed
+         * @default `null`
+         */
+        notAvailablePath?: string;
+        /**
+         * Absolute URL or relative path to the image to display during preview generation (modern browsers) or until the server response has been parsed (older browsers)
+         * @default `null`
+         */
+        waitingPath?: string;
+        /**
+         * Set this to true if you want the 'waiting' placeholder image to remain in place until the server response has been parsed. 
+         * This is useful if you expect to return thumbnail URLs in your upload responses for files types that cannot be previewed. 
+         * This option is ignored in older browsers where client-side previews cannot be generated
+         * @default `false`
+         */
+        waitUntilResponse?: boolean;
+    }
+
+    /**
+     * UIPasteOptions
+     */
+    interface UIPasteOptions extends PasteOptions {
+        /**
+         * Text that will appear in the `showPrompt` dialog.
+         * @default `Please name this image`
+         */
+        namePromptMessage?: string;
+        /**
+         * Enable or disable the usage of `showPrompt` by Fine Uploader to prompt the user for a filename for a pasted file
+         * @default `false`
+         */
+        promptForName?: boolean;
+    }
+
+    /**
+     * UIScalingOptions
+     */
+    interface UIScalingOptions extends ScalingOptions {
+        /**
+         * Text that will appear next to a scaled image that could not be generated. 
+         * This is in addition to the behavior associated with this property provided by Fine Uploader Core
+         * @default `'Failed to scale'`
+         */
+        failureText?: string;
+        /**
+         * Set this to true if you do not want any scaled images to be displayed in the file list
+         * @default `false`
+         */
+        hideScaled?: boolean;
+    }
+
+    /**
+     * UITextOptions
+     */
+    interface UITextOptions extends TextOptions {
+        /**
+         * Text that appears next to a failed item
+         * @default `'Upload failed'`
+         */
+        failUpload?: string;
+        /**
+         * Appears next to a currently uploading item
+         * @default `'{percent}% of {total_size}'`
+         */
+        formatProgress?: string;
+        /**
+         * Appears next to a paused item
+         * @default `'paused'`
+         */
+        paused?: string;
+        /**
+         * Appears next to item once the last bytes have been sent (differs on the user-agent)
+         * @default `'Processing...'`
+         */
+        waitingForResponse?: string;
+    }
+
+
+    /**
+     * Contains UIOptions
+     */
+    interface UIOptions extends CoreOptions {
+        /**
+         * Container element for the default drop zone
+         * @default `null`
+         */
+        element?: HTMLElement;
+        /**
+         * Container element for the item list
+         * @default `null`
+         */
+        listElement?: HTMLElement;
+        /**
+         * When false this will prevent the user from simultaneously selecting or dropping more than one item. 
+         * Dropping or selecting another item will clear the upload list. If another is already uploading, it will be canceled. 
+         * To ignore rather than cancel, simply return false in the 'validate' or 'submit' event handlers
+         * @default `true`
+         */
+        multiple?: boolean
+        /**
+         * Provide a function here to display a message to the user when the uploader receives an error or the user attempts to leave the page. 
+         * The provided function may return a promise if one wishes to do asynchronous work whilst waiting for user input
+         * @default `function(message) { window.alert(message); }`
+         */
+        showMessage?: ShowMessageFunction;
+        /**
+         * Provide a function here to prompt the user to confirm deletion of a file. 
+         * The provided function may return a promise if one wishes to do asynchronous work whilst waiting for user input
+         * @default `function(message) { window.confirm(message); }`
+         */
+        showConfirm?: ShowConfirmFunction;
+        /**
+         * Provide a function here to prompt the user for a filename when pasting file(s). 
+         * The provided function may return a promise if one wishes to do asynchronous work whilst waiting for user input
+         * @default `function(message, defaultValue) { window.prompt(message, defaultValue); }`
+         */
+        showPrompt?: ShowPromptFunction;
+        /**
+         * This points to the container element that contains the template to use for one or more Fine Uploader UI instances. 
+         * You can either specify a string, which is the element ID (the ID of the container element on the page) or an `Element` that points to the container element
+         * @default `'qq-template'`
+         */
+        template?: string | HTMLElement;
+        /**
+         * UIDeleteFileOptions
+         */
+        deleteFile?: UIDeleteFileOptions;
+        /**
+         * display options
+         */
+        display?: UIDisplayOptions;
+        /**
+         * dragAndDrop options
+         */
+        dragAndDrop?: UIDragAndDropOptions;
+        /**
+         * failedUploadTextDisplay options
+         */
+        failedUploadTextDisplay?: UIFailedUploadTextDisplay;
+        /**
+         * messages
+         */
+        messages?: UIMessages;
+        /**
+         * retry options
+         */
+        retry?: UIRetryOptions;
+        /**
+         * thumbnail options
+         */
+        thumbnails?: UIThumbnailsOptions;
+        /**
+         * paste UI options
+         */
+        paste?: UIPasteOptions;
+        /**
+         * UI scaling options
+         */
+        scaling?: UIScalingOptions;
+        /**
+         * UI text options
+         */
+        text?: UITextOptions;
+    }
 
 
     /**
@@ -944,7 +1260,15 @@ declare namespace FineUploader {
 
         /* ======================================= CORE METHODS ========================================== */
 
-        FineUploader(fineuploaderOptions: CoreOptions): qq;
+        /**
+         * The FineUploader Core only constructor 
+         */
+        FineUploaderBasic(fineuploaderOptions: CoreOptions): qq;
+
+        /**
+         * The FineUploader Core + UI constructor 
+         */
+        FineUploader(fineuploaderOptions: UIOptions): qq;
 
         /**
          * Submit one or more files to the uploader
@@ -1237,55 +1561,96 @@ declare namespace FineUploader {
 
     }
 
-    /**
-     * Contains all Core, S3 and Azure methods, events and options
-     */
-    interface qq extends Core {
-        s3: S3;
-        azure: Azure;
-    }
 
-    interface S3Options {
-        //Core
+
+    /**
+     * S3CredentialsOptions
+     */
+    interface S3CredentialsOptions {
         /**
-         * Temporary public AWS key         
+         * Temporary public AWS key    
+         * @default `null`     
          */
         accessKey: string;
         /**
          * Expiration date for temporary credentials. May be an ISO 8601 String or a `Date` object.
+         * @default `null`
          */
         expiration: string | Date;
         /**
          * Temporary secret AWS key
+         * @default `null`
          */
         secretKey: string;
         /**
          * Session token associated with the temporary credentials
+         * @default `null`
          */
         sessionToken: string;
+    }
 
-        //Chunking
+    /**
+     * S3ChunkingOptions
+     */
+    interface S3ChunkingOptions extends ChunkingOptions {
         /**
          * The maximum size of each part, in bytes
+         * @default `5242880`
          */
         partSize: number;
+    }
 
-        //CORS
+    /**
+     * S3CorsOptions
+     */
+    interface S3CorsOptions extends CorsOptions {
         /**
          * Enables or disables cross-domain ajax calls (if the `expected` property is true) in IE9 and older.
+         * @default `true`
          */
         allowXdr: boolean;
+    }
 
-        //iframeSupport
+    /**
+     * S3iFrameSupportOptions
+     */
+    interface S3iFrameSupportOptions {
         /**
          * This is required if you plan on supporting browsers that do not implement the File API, such as IE9 and older. 
          * This must point to a blank page on the same origin/domain as the page hosting Fine Uploader
+         * @default `null`
          */
         localBlankPagePath: string;
+    }
 
-        //objectProperties
+    /**
+     * type for S3's bucket object property 
+     */
+    interface BucketFunction {
+        (id: number): Promise<any> | string;
+    }
+
+    /**
+     * type for S3's host object property 
+     */
+    interface HostFunction {
+        (id: number): Promise<any> | string;
+    }
+
+    /**
+     * type for S3's key object property 
+     */
+    interface KeyFunction {
+        (id: number): Promise<any> | string;
+    }
+
+    /**
+     * S3ObjectPropertyOptions
+     */
+    interface S3ObjectPropertyOptions {
         /**
          * This value corresponds to a canned ACL
+         * @default `'private'`
          */
         acl: string;
         /**
@@ -1294,6 +1659,7 @@ declare namespace FineUploader {
          * Possible values are a string representing the bucket name, or a function. 
          * If the value is a function, Fine Uploader S3 will pass the associated file ID as a parameter when invoking your function. 
          * If the value is a function it may return a `promise` or a `String`
+         * @default `(assumes the bucket can be determined by parsing the endpoint string)`
          */
         bucket: string | BucketFunction;
         /**
@@ -1302,6 +1668,7 @@ declare namespace FineUploader {
          * Possible values are a string representing the host name, or a function. 
          * If the value is a function, Fine Uploader S3 will pass the associated file ID as a parameter when invoking your function. 
          * If the value is a function it may return a `promise` or a `String`.
+         * @default `(uses the request endpoint to determine the hostname)`
          */
         host: string | HostFunction;
         /**
@@ -1309,20 +1676,170 @@ declare namespace FineUploader {
          * Possible values are 'uuid', 'filename' or a function. 
          * If the value is a function, Fine Uploader S3 will pass the associated file ID as a parameter when invoking your function. 
          * If the value is a function it may return one of a `promise` or a `String`.
+         * @default `'uuid'`
          */
         key: string | KeyFunction;
         /**
          * Set this to true if you would like to use the reduced redundancy storage class for all objects uploaded to S3
+         * @default `false`
          */
         reducedRedundancy: boolean;
         /**
          * Version 4 signatures only: The S3 region identifier for the target bucket
+         * @default `'us-east-1'`
          */
         region: string;
         /**
          * Set this to true if you would like all uploaded files to be encrypted by AWS
+         * @default `false`
          */
         serverSideEncryption: boolean;
+    }
+
+    interface S3RequestOptions extends RequestOptions {
+        /**
+         * Your AWS public key. NOT YOUR SECRET KEY. Ignored if `credentials` have been set
+         * @default `null`
+         */
+        accessKey?: string;
+        /**
+         * Number of milliseconds to add to the `x-amz-date` header and the policy expiration date to account for clock drift on the browser/client machine
+         * @default `0`
+         */
+        clockDrift?: number;
+        /**
+         * URL for your S3 bucket or the URL of a CDN that forwards the request to S3. 
+         * All valid bucket URLs documented by Amazon are supported, including custom domains. SSL is also supported. 
+         * If you use a CDN address, be sure to specify the bucket via the objectProperties.bucket option
+         * @default `null`
+         */
+        endpoint?: string;
+        /**
+         * Part of the parameter name that contains the name of the associated file which may differ from the key name. 
+         * Prefixed with 'x-amz-meta-' by Fine Uploader
+         * @default `'qqfilename'`
+         */
+        filenameParam?: string;
+        /**
+         * Parameters passed along with each upload request
+         * @default `{}`
+         */
+        params?: any;
+    }
+
+    /**
+     * type for S3's customHeaders function  
+     */
+    interface S3CustomHeaderFunction {
+        (id: number): void;
+    }
+
+    /**
+     * S3SignatureOptions
+     */
+    interface S3SignatureOptions {
+        /**
+         * Additional headers sent along with each signature request. 
+         * If you declare a function as the value, the associated file's ID will be passed to your function when it is invoked
+         * @default `{}`
+         */
+        customHeaders?: any | S3CustomHeaderFunction;
+        /**
+         * The endpoint that Fine Uploader can use to send policy documents (HTML form uploads) or other strings to sign (REST requests) before sending requests off to S3
+         * @default `null`
+         */
+        endpoint?: string;
+        /**
+         * The AWS/S3 signature version to use. Currently supported values are `2` and `4`. Directly related to `objectProperties.region`
+         * @default `2`
+         */
+        version?: number;
+    }
+
+    /**
+     * S3UploadSuccessOptions
+     */
+    interface S3UploadSuccessOptions {
+        /**
+         * Additional headers sent along with each signature request
+         * @default `{}`
+         */
+        customHeaders?: any;
+        /**
+         * An endpoint that Fine Uploader should POST to when a file has been successfully uploaded to S3
+         * @default `null`
+         */
+        endpoint?: string;
+        /**
+         * The request method (i.e. POST/PUT)
+         * @default `POST`
+         */
+        method?: string;
+        /**
+         * Any additional parameters to attach to upload success file requests. 
+         * Note that Fine Uploader will still send the bucket, key, filename, UUID, and etag (if available) as well
+         * @default `{}`
+         */
+        params?: any;
+    }
+
+    /**
+     * Contains S3's Core options
+     */
+    interface S3CoreOptions extends CoreOptions {
+        /**
+         * credentials  
+         */
+        credentials?: S3CredentialsOptions;
+        /**
+         * chunking options
+         */
+        chunking?: S3ChunkingOptions;
+        /**
+         * cors options
+         */
+        cors?: S3CorsOptions;
+        /**
+         * iframeSupport options
+         */
+        iframeSupport?: S3iFrameSupportOptions;
+        /**
+         * objectProperties
+         */
+        objectProperties?: S3ObjectPropertyOptions;
+        /**
+         * request options
+         */
+        request: S3RequestOptions;
+        /**
+         * signature options
+         */
+        signature?: S3SignatureOptions;
+        /**
+         * upload success options
+         */
+        uploadSuccess?: S3UploadSuccessOptions;
+    }
+
+    /**
+     * S3FailedUploadTextDisplayOptions
+     */
+    interface S3FailedUploadTextDisplayOptions {
+        /**
+         * You will most likely want to keep this at the default value of 'custom'. See the UI options documentation for more info on this option.
+         * @default `'custom'`
+         */
+        mode?: string;
+    }
+
+    /**
+     * NOT WORKING YET
+     */
+    interface S3UIOptions extends S3CoreOptions, UIOptions {
+        /**
+         * failedUploadText options
+         */
+        failedUploadTextDisplay?: S3FailedUploadTextDisplayOptions;
     }
 
     /**
@@ -1393,6 +1910,181 @@ declare namespace FineUploader {
         /* ===================================== END - S3 METHODS ============================================== */
     }
 
+
+
+
+    /**
+     * AzureChunkingOptions
+     */
+    interface AzureChunkingOptions extends ChunkingOptions {
+        /**
+         * The maximum size of each part, in bytes
+         * @default `5242880`
+         */
+        partSize: number;
+        /**
+         * Files smaller than this value will not be chunked.
+         * @default `4000001`
+         */
+        minFileSize?: number
+    }
+
+    /**
+     * AzureCorsOptions
+     */
+    interface AzureCorsOptions extends CorsOptions {
+        /**
+         * Enables or disables cross-domain ajax calls (if the `expected` property is true) in IE9 and older.
+         * @default `true`
+         */
+        allowXdr: boolean;
+    }
+
+    /**
+     * AzureBlobPropertyNameFunction
+     */
+    interface AzureBlobPropertyNameFunction {
+        (id: number) : Promise<any> | string;
+    }
+
+    /**
+     * AzureBlobPropertyOptions
+     */
+    interface AzureBlobPropertyOptions {
+        /**
+         * Describes the blob name used to identify the file in your Azure Blob Storage container. 
+         * Possible values are 'uuid', 'filename' or a function. If the value is a function, Fine Uploader Azure will pass the associated file ID as a parameter when invoking your function. 
+         * If the value is a function it may return one of a qq.Promise or a String
+         * @default `'uuid'`
+         */
+        name?: string | AzureBlobPropertyNameFunction;
+    }
+
+    /**
+     * AzureRequestOptions
+     */
+    interface AzureRequestOptions extends RequestOptions {
+        /**
+         * URL for your Azure Blob Storage container
+         * @default `null`
+         */
+        containerUrl?: string;
+        /**
+         * Parameters passed along with each upload request.
+         * @default `{}`
+         */
+        params?: any;
+        /**
+         * Part of the parameter name that contains the name of the associated file which may differ from the blob name. 
+         * Prefixed with 'x-ms-meta-' by Fine Uploader
+         * @default `'qqfilename'`
+         */
+        filenameParam?: string;
+    }
+
+    /**
+     * type for Azure's customHeaders function  
+     */
+    interface AzureCustomHeaderFunction {
+        (id: number): void;
+    }
+
+    /**
+     * AzureSignatureOptions
+     */
+    interface AzureSignatureOptions {
+        /**
+         * Additional headers sent along with each signature request. 
+         * If you declare a function as the value, the associated file's ID will be passed to your function when it is invoked
+         * @default `{}`
+         */
+        customHeaders?: any | AzureCustomHeaderFunction;
+        /**
+         * The endpoint that Fine Uploader can use to send GET for a SAS before sending requests off to Azure. 
+         * The blob URL and underlying method type associated with the underlying REST request will be included in the query string
+         * @default `null`
+         */
+        endpoint?: string;
+    }
+
+    /**
+     * AzureUploadSuccessOptions
+     */
+    interface AzureUploadSuccessOptions {
+        /**
+         * Additional headers sent along with each signature request
+         * @default `{}`
+         */
+        customHeaders?: any;
+        /**
+         * An endpoint that Fine Uploader should POST to when a file has been successfully uploaded to Azure Blob Storage.
+         * @default `null`
+         */
+        endpoint?: string;
+        /**
+         * The request method (i.e. POST/PUT)
+         * @default `POST`
+         */
+        method?: string;
+        /**
+         * Any additional parameters to attach to upload success file requests. 
+         * Note that Fine Uploader will still send the bucket, key, filename, UUID, and etag (if available) as well
+         * @default `{}`
+         */
+        params?: any;
+    }
+
+    /**
+     * Azure Core Options 
+     */
+    interface AzureCoreOptions extends CoreOptions {
+        /**
+         * chunking options
+         */
+        chunking?: AzureChunkingOptions;
+        /**
+         * cors options
+         */
+        cors?: AzureCorsOptions;
+        /**
+         * blobProperties
+         */
+        blobProperties?: AzureBlobPropertyOptions;
+        /**
+         * RequestOptions
+         */
+        request: AzureRequestOptions;
+        /**
+         * AzureSignatureOptions
+         */
+        signature?: AzureSignatureOptions;
+        /**
+         * AzureUploadSuccessOptions
+         */
+        uploadSuccess?: AzureUploadSuccessOptions;
+    }
+
+    /**
+     * AzureFailedUploadTextDisplayOptions
+     */
+    interface AzureFailedUploadTextDisplayOptions {
+        /**
+         * You will most likely want to keep this at the default value of 'custom'. See the UI options documentation for more info on this option.
+         * @default `'custom'`
+         */
+        mode?: string;
+    }
+
+    /**
+     * NOT WORKING YET
+     */
+    interface AzureUIOptions extends AzureCoreOptions, UIOptions {
+        /**
+         * failedUploadText options
+         */
+        failedUploadTextDisplay?: AzureFailedUploadTextDisplayOptions;
+    }
+
     /**
      * Contains all the Azure methods and events
      */
@@ -1437,6 +2129,16 @@ declare namespace FineUploader {
 
 
         /* ===================================== END - AZURE METHODS ============================================== */
+    }
+
+
+
+    /**
+     * Contains all Core, S3 and Azure methods, events and options
+     */
+    interface qq extends Core {
+        s3: S3;
+        azure: Azure;
     }
 
 }
