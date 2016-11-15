@@ -154,7 +154,7 @@ declare namespace FineUploader {
          */
         maxSize: number;
         /**
-         * defaults to `true`
+         * @default `true`
          */
         orient?: boolean;
         /**
@@ -162,11 +162,12 @@ declare namespace FineUploader {
          */
         type?: string;
         /**
-         * number between `0` and `100`, defaults to `80`
+         * number between `0` and `100` 
+         * @default `80`
          */
         quality?: number;
         /**
-         * defaults to `false`
+         * @default `false`
          */
         includeExif?: boolean;
         /**
@@ -212,6 +213,7 @@ declare namespace FineUploader {
     interface BlobsOptions {
         /**
          * The default name to be used for nameless `Blob`s
+         * @default `Misc data`
          */
         defaultName?: string;
     }
@@ -224,11 +226,13 @@ declare namespace FineUploader {
         /**
          * `null` allows camera access on the default button in iOS. 
          * Otherwise provide an extra button container element to target
+         * @default `null`
          */
         button?: HTMLElement;
         /**
          * Enable or disable camera access on iOS (iPod, iPhone, and iPad) devices. 
          * Note: Enabling this will disable multiple file selection
+         * @default `false`
          */
         ios?: boolean;
     }
@@ -239,6 +243,7 @@ declare namespace FineUploader {
     interface ConcurrentOptions {
         /**
          * Allow multiple chunks to be uploaded simultaneously per file
+         * @default `false`
          */
         enabled?: boolean;
     }
@@ -253,19 +258,22 @@ declare namespace FineUploader {
         concurrent?: ConcurrentOptions;
         /**
          * Enable or disable splitting the file separate chunks. Each chunks is sent in a separate request
+         * @default `false`
          */
         enabled?: boolean;
         /**
          * Ensure every file is uploaded in chunks, even if the file can only be split up into 1 chunk. 
          * Does not apply if chunking is not possible in the current browser
+         * @default `false`
          */
         mandatory?: boolean;
         /**
          * The maximum size of each chunk, in bytes
+         * @default `2000000`
          */
         partSize?: number;
         /**
-         * ParamNamesOptions
+         * ParamNamesOptions         
          */
         paramNames?: ParamNamesOptions;
         /**
@@ -281,26 +289,32 @@ declare namespace FineUploader {
     interface ParamNamesOptions {
         /**
          * Name of the parameter passed with a chunked request that specifies the size in bytes of the associated chunk
+         * @default `'qqchunksize'`
          */
         chunkSize?: string;
         /**
          * Name of the parameter passed with a chunked request that specifies the starting byte of the associated chunk
+         * @default `'qqpartbyteoffset'`
          */
         partByteOffset?: string;
         /**
          * Name of the parameter passed with a chunked request that specifies the index of the associated partition
+         * @default `'qqpartindex'`
          */
         partIndex?: string;
         /**
          * Name of the parameter passed with a chunked request that specifies the total number of chunks associated with the `File` or `Blob`
+         * @default `'qqtotalparts'`
          */
         totalParts?: string;
         /**
          * Sent with the first request of the resume with a value of `true`
+         * @default `'qqresume'`
          */
         resuming?: string;
         /**
          * totalFileSize
+         * @default `'qqtotalfilesize'`
          */
         totalFileSize?: string;
     }
@@ -312,6 +326,7 @@ declare namespace FineUploader {
         /**
          * Endpoint to send a POST after all chunks have been successfully uploaded for each file. 
          * Required if the `concurrent.enabled` option is set
+         * @default `null`
          */
         endpoint?: string;
     }
@@ -321,14 +336,17 @@ declare namespace FineUploader {
     interface CorsOptions {
         /**
          * Enable or disable cross-origin requests from IE9 and older where XDomainRequest must be used
+         * @default `false`
          */
         allowXdr?: boolean;
         /**
          * Enable or disable cross-domain requests
+         * @default `false`
          */
         expected?: boolean;
         /**
          * Enable or disable sending credentials along with each cross-domain request. Ignored if allowXdr is true and IE9 is being used
+         * @default `false`
          */
         sendCredentials?: boolean;
     }
@@ -339,23 +357,28 @@ declare namespace FineUploader {
     interface DeleteFileOptions {
         /**
          * Any additional headers to attach to all delete file requests
+         * @default `{}`
          */
         customHeaders?: any;
         /**
          * Enable or disable deletion of uploaded files
+         * @default `false`
          */
         enabled?: boolean;
         /**
          * The endpoint to which delete file requests are sent.
+         * @default `'/server/upload'`
          */
         endpoint?: string;
         /**
          * Set the method to use for delete requests. 
          * Accepts 'POST' or 'DELETE'
+         * @default `'DELETE'`
          */
         method?: string;
         /**
          * Any additional parameters to attach to delete file requests
+         * @default `{}`
          */
         params?: any;
     }
@@ -366,24 +389,29 @@ declare namespace FineUploader {
     interface ExtraButtonsOptions {
         /**
          * The container element for the upload button
+         * @default `undefined`
          */
         element: HTMLElement;
         /**
          * This value will be used when creating the `title` attribute for the underlying `<input type="file">`. 
          * If not provided, the `text.fileInputTitle` option will be used instead
+         * @default `'file input'`
          */
         fileInputTitle?: string;
         /**
          * `true` to allow folders to be selected, `false` to allow files to be selected. See the browser support page for details regarding the limited user agent support for this feature
+         * @default `false`
          */
         folders?: boolean;
         /**
          * Specify to override the default `multiple` value
+         * @default `true`
          */
         multiple?: boolean;
         /**
          * Specify to override the default `validation` option specified. 
          * Any `validation` properties not specified will be inherited from the default `validation` option
+         * @default `validation`
          */
         validation?: any;
     }
@@ -665,8 +693,137 @@ declare namespace FineUploader {
         sendOriginal?: boolean;
         /**
          * An array containing size objects that describe scaled versions of each submitted image that should be generated and uploaded
+         * @default `[]`
          */
         sizes?: SizeOptions;
+    }
+
+    /**
+     * SessionOptions
+     */
+    interface SessionOptions {
+        /**
+         * Any additional headers you would like included with the GET request sent to your server. Ignored in IE9 and IE8 if the endpoint is cross-origin
+         * @default `{}`
+         */
+        customHeaders?: any;
+        /**
+         * If non-null, Fine Uploader will send a GET request on startup to this endpoint, expecting a JSON response containing data about the initial file list to populate
+         * @default `null`
+         */
+        endpoint?: string;
+        /**
+         * Any parameters you would like passed with the associated GET request to your server
+         * @default `{}`
+         */
+        params?: any;
+        /**
+         * Set this to `false` if you do not want the file list to be retrieved from the server as part of a reset.
+         * @default `true`
+         */
+        refreshOnReset?: boolean
+    }
+
+    /**
+     * TextOptions
+     */
+    interface TextOptions {
+        /**
+         * In the event of non-200 response from the server sans the 'error' property, this message will be passed to the 'error' event handler
+         * @default `'Upload failure reason unknown'`
+         */
+        defaultResponseError?: string;
+        /**
+         * The value for the `title` attribute attached to the `<input type="file">` maintained by Fine Uploader for each upload button. This is used as hover text, among other things
+         * @default `'file input'`
+         */
+        fileInputTitle?: string;
+        /**
+         * Symbols used to represent file size, in ascending order
+         * @default `['kB', 'MB', 'GB', 'TB', 'PB', 'EB']`
+         */
+        sizeSymbols?: string[];
+    }
+
+    interface ImageOptions {
+        /**
+         * Restrict images to a maximum height in pixels (wherever possible)
+         * @default `0`
+         */
+        maxHeight?: number;
+        /**
+         * Restrict images to a maximum width in pixels (wherever possible)
+         * @default `0`
+         */
+        maxWidth?: number;
+        /**
+         * Restrict images to a minimum height in pixels (wherever possible)
+         * @default `0`
+         */
+        minHeight?: number;
+        /**
+         * Restrict images to a minimum width in pixels (wherever possible)
+         * @default `0`
+         */
+        minWidth?: number;
+    }
+
+    interface ValidationOptions {
+        /**
+         * Used by the file selection dialog. Restrict the valid file types that appear in the selection dialog by listing valid content-type specifiers
+         * @default `null`
+         */
+        acceptFiles?: any;
+        /**
+         * Specify file valid file extensions here to restrict uploads to specific types
+         * @default `[]`
+         */
+        allowedExtensions?: string[];
+        /**
+         * Maximum number of items that can be potentially uploaded in this session. Will reject all items that are added or retried after this limit is reached
+         * @default `0`
+         */
+        itemLimit?: number;
+        /**
+         * The minimum allowable size, in bytes, for an item
+         * @default `0`
+         */
+        minSizeLimit: number;
+        /**
+         * The maximum allowable size, in bytes, for an item
+         * @default `0` 
+         */
+        sizeLimit?: number;
+        /**
+         * When `true` the first invalid item will stop processing further files
+         * @default `true`
+         */
+        stopOnFirstInvalidFile?: boolean;
+        /**
+         * ImageOptions
+         */
+        image?: ImageOptions;
+    }
+
+    interface WorkArounds {
+        /**
+         * Ensures all `<input type='file'>` elements tracked by Fine Uploader do NOT contain a `multiple` attribute to work around an issue present in iOS7 & 8 that otherwise results in 0-sized uploaded videos
+         * @default `true`
+         */
+        iosEmptyVideos?: boolean;
+        /**
+         * Ensures all `<input type='file'>` elements tracked by Fine Uploader always have a `multiple` attribute present. 
+         * This only applies to iOS8 Chrome and iOS8 UIWebView, and is put in place to work around an issue that causes the browser to crash when a file input element does not contain a `multiple` attribute inside of a `UIWebView` container created by an iOS8 app compiled with and iOS7 SDK
+         * @default `false`
+         */
+        ios8BrowserCrash?: boolean;
+        /**
+         * Disables Fine Uploader and displays a message to the user in iOS 8.0.0 Safari. 
+         * Due to serious bugs in iOS 8.0.0 Safari, uploading is not possible. 
+         * This was apparently fixed in subsequent builds of iOS8, so this workaround only targets 8.0.0
+         * @default `true`
+         */
+        ios8SafariUploads?: boolean;
     }
 
 
@@ -676,18 +833,22 @@ declare namespace FineUploader {
     interface CoreOptions {
         /**
          * Set to false if you want to be able to upload queued items later by calling the `uploadStoredFiles()` method
+         * @default `true`
          */
         autoUpload?: boolean;
         /**
          * Specify an element to use as the 'select files' button. Cannot be a `<button>`
+         * @default `null`
          */
         button?: HTMLElement;
         /**
          * This will result in log messages being written to the `window.console` object
+         * @default `false`
          */
         debug?: boolean;
         /**
          * When true the cancel link does not appear next to files when the form uploader is used
+         * @default `false`
          */
         disableCancelForFormUploads?: boolean;
         /**
@@ -698,10 +859,12 @@ declare namespace FineUploader {
         formatFileName?: FormatFileNameFuncton;
         /**
          * Maximum allowable concurrent requests
+         * @default `3`
          */
         maxConnections?: number;
         /**
          * When false this will prevent the user from simultaneously selecting or dropping more than one item
+         * @default `true`
          */
         multiple?: boolean;
 
@@ -753,6 +916,22 @@ declare namespace FineUploader {
          * ScalingOptions
          */
         scaling?: ScalingOptions;
+        /**
+         * SessionOptions
+         */
+        session?: SessionOptions;
+        /**
+         * TextOptions
+         */
+        text?: TextOptions;
+        /**
+         * ValidationOptions
+         */
+        validation?: ValidationOptions;
+        /**
+         * WorkArounds
+         */
+        workarounds?: WorkArounds;
 
     }
 
@@ -764,6 +943,8 @@ declare namespace FineUploader {
     interface Core {
 
         /* ======================================= CORE METHODS ========================================== */
+
+        FineUploader(fineuploaderOptions: CoreOptions): qq;
 
         /**
          * Submit one or more files to the uploader
@@ -1064,7 +1245,7 @@ declare namespace FineUploader {
         azure: Azure;
     }
 
-    interface S3Options{
+    interface S3Options {
         //Core
         /**
          * Temporary public AWS key         
@@ -1261,3 +1442,4 @@ declare namespace FineUploader {
 }
 
 declare var qq: FineUploader.qq;
+
