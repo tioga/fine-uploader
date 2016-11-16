@@ -5,6 +5,7 @@
 
 declare namespace FineUploader {
 
+    /* ========================================================== CORE & UI ===================================================================== */
     /**
      * type for `resizeInfo` object
      */
@@ -197,7 +198,6 @@ declare namespace FineUploader {
         defaultName?: string;
     }
 
-
     /**
      * CameraOptions
      */
@@ -309,6 +309,7 @@ declare namespace FineUploader {
          */
         endpoint?: string;
     }
+
     /**
      * CorsOptions
      */
@@ -724,6 +725,9 @@ declare namespace FineUploader {
         sizeSymbols?: string[];
     }
 
+    /**
+     * ImageOptions
+     */
     interface ImageOptions {
         /**
          * Restrict images to a maximum height in pixels (wherever possible)
@@ -747,6 +751,9 @@ declare namespace FineUploader {
         minWidth?: number;
     }
 
+    /**
+     * ValidationOptions
+     */
     interface ValidationOptions {
         /**
          * Used by the file selection dialog. Restrict the valid file types that appear in the selection dialog by listing valid content-type specifiers
@@ -784,15 +791,20 @@ declare namespace FineUploader {
         image?: ImageOptions;
     }
 
+    /**
+     * WorkArounds options
+     */
     interface WorkArounds {
         /**
          * Ensures all `<input type='file'>` elements tracked by Fine Uploader do NOT contain a `multiple` attribute to work around an issue present in iOS7 & 8 that otherwise results in 0-sized uploaded videos
+         * 
          * @default `true`
          */
         iosEmptyVideos?: boolean;
         /**
          * Ensures all `<input type='file'>` elements tracked by Fine Uploader always have a `multiple` attribute present. 
          * This only applies to iOS8 Chrome and iOS8 UIWebView, and is put in place to work around an issue that causes the browser to crash when a file input element does not contain a `multiple` attribute inside of a `UIWebView` container created by an iOS8 app compiled with and iOS7 SDK
+         * 
          * @default `false`
          */
         ios8BrowserCrash?: boolean;
@@ -800,11 +812,487 @@ declare namespace FineUploader {
          * Disables Fine Uploader and displays a message to the user in iOS 8.0.0 Safari. 
          * Due to serious bugs in iOS 8.0.0 Safari, uploading is not possible. 
          * This was apparently fixed in subsequent builds of iOS8, so this workaround only targets 8.0.0
+         * 
          * @default `true`
          */
         ios8SafariUploads?: boolean;
     }
 
+
+    /* ====================================== Core Callback functions ==================================== */
+
+    /**
+     * onAutoRetry function type
+     */
+    interface OnAutoRetry {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param number attemptNumber : The number of retry attempts for the current file so far
+         */
+        (id: number, name: string, attemptNumber: number): void;
+    }
+
+    /**
+     * onCancel function type
+     */
+    interface OnCancel {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         */
+        (id: number, name: string): boolean | Promise<any> | void;
+    }
+
+    /**
+     * onComplete function type
+     */
+    interface OnComplete {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param Object responseJSON : The raw response from the server
+         * @param XMLHttpRequest xhr : The object used to make the request
+         */
+        (id: number, name: string, responseJSON: any, xhr: XMLHttpRequest): void;
+    }
+
+    /**
+     * onAllComplete function type
+     */
+    interface OnAllComplete {
+        /**
+         * @param number[] succeeded : IDs of all files in the group that have uploaded successfully (status = `qq.status.UPLOAD_SUCCESSFUL`)
+         * @param number[] failed : IDs of all files in the group that have failed (status = `qq.status.UPLOAD_FAILED`)
+         */
+        (succeeded: number[], failed: number[]): void;
+    }
+
+    /**
+     * onDelete function type
+     */
+    interface OnDelete {
+        /**
+         * @param number id : The current file's id
+         */
+        (id: number): void;
+    }
+
+    /**
+     * onDeleteComplete function type
+     */
+    interface OnDeleteComplete {
+        /**
+         * @param number id : The current file's id
+         * @param XMLHttpRequest xhr : The object used to make the request
+         * @param boolean isError : `true` if there has been an error, `false` otherwise
+         */
+        (id: number, xhr: XMLHttpRequest, isError: boolean): void;
+    }
+
+    /**
+     * onError function type
+     */
+    interface OnError {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param string errorReason : The reason for the current error
+         * @param XMLHttpRequest xhr : The object used to make the request
+         */
+        (id: number, name: string, errorReason: string, xhr: XMLHttpRequest): void;
+    }
+
+    /**
+     * onManualRetry function type
+     */
+    interface OnManualRetry {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         */
+        (id: number, name: string): boolean | void;
+    }
+
+    /**
+     * onPasteReceived function type
+     */
+    interface OnPasteReceived {
+        /**
+         * @param Blob blob : An object encapsulating the image pasted from the clipboard
+         */
+        (blob: Blob): Promise<any> | void;
+    }
+
+    /**
+     * onProgress function type
+     */
+    interface OnProgress {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param number uploadedBytes : The number of bytes that have been uploaded so far
+         * @param number totalBytes : The total number of bytes that comprise this file
+         */
+        (id: number, name: string, uploadedBytes: number, totalBytes: number): void;
+    }
+
+    /**
+     * onResume function type
+     */
+    interface OnResume {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param Object chunkData : The chunk that will be sent next when file upload resumes         
+         */
+        (id: number, name: string, chunkData: any): void;
+    }
+
+    /**
+     * onSessionRequestComplete function type
+     */
+    interface OnSessionRequestComplete {
+        /**
+         * @param any[] response : The raw response data
+         * @param boolean success : Indicates whether success has been achieved or not
+         * @param XMLHttpRequest xhrOrXdr : The raw request
+         */
+        (response: any[], success: boolean, xhrOrXdr: XMLHttpRequest): void;
+    }
+
+    /**
+     * onStatusChange function type
+     */
+    interface OnStatusChange {
+        /**
+         * @param number id : The current file's id
+         * @param string oldStatus : The previous item status
+         * @param string newStatus : The new status of the item
+         */
+        (id: number, oldStatus: string, newStatus: string): void;
+    }
+
+    /**
+     * onSubmit function type 
+     */
+    interface OnSubmit {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         */
+        (id: number, name: string): boolean | Promise<any> | void;
+    }
+
+    /**
+     * onSubmitDelete function type
+     */
+    interface OnSubmitDelete {
+        /**
+         * @param number id : The current file's id
+         */
+        (id: number): Promise<any> | void;
+    }
+
+    /**
+     * onSubmitted function type
+     */
+    interface OnSubmitted {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         */
+        (id: number, name: string): void;
+    }
+
+    /**
+     * onTotalProgress function type
+     */
+    interface OnTotalProgress {
+        /**
+         * @param number totalUploadedBytes : The number of bytes that have been uploaded so far in this batch
+         * @param number totalBytes : The total number of bytes that comprise all files in the batch
+         */
+        (totalUploadedBytes: number, totalBytes: number): void;
+    }
+
+    /**
+     * onUpload function type
+     */
+    interface OnUpload {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         */
+        (id: number, name: string): void;
+    }
+
+    /**
+     * properties for chunkData object
+     */
+    interface ChunkData {
+        /**
+         * the 0-based index of the associated partition
+         */
+        partIndex: number;
+        /**
+         * the byte offset of the current chunk
+         */
+        startByte: number;
+        /**
+         * the last byte of the current chunk
+         */
+        endByte: number;
+        /**
+         * the total number of partitions associated with the `File` or `Blob`
+         */
+        totalParts: number;
+    }
+
+    /**
+     * onUploadChunk function type
+     */
+    interface OnUploadChunk {
+        /**
+         * @param number id : The current file's id
+         * @param string name : The current file's name
+         * @param ChunkData chunkData : An object encapsulating the current chunk of data about to be uploaded
+         */
+        (id: number, name: string, chunkData: ChunkData): void;
+    }
+
+    /**
+     * onUploadChunkSuccess function type 
+     */
+    interface OnUploadChunkSuccess {
+        /**
+         * @param number id : The current file's id
+         * @param ChunkData chunkData : An object encapsulating the current chunk of data about to be uploaded
+         * @param Object responseJSON : The raw response from the server
+         * @param XMLHttpRequest xhr : The object used to make the request
+         */
+        (id: number, chunkData: ChunkData, responseJSON: any, xhr: XMLHttpRequest): void;
+    }
+
+    /**
+     * blobData object 
+     */
+    interface BlobDataObject {
+        /**
+         * the name of the file  
+         */
+        name: string;
+        /**
+         * the size of the file
+         */
+        size: number;
+    }
+
+    /**
+     * onValidate function type
+     */
+    interface OnValidate {
+        /**
+         * @param BlobDataObject data : An object with a name and size property
+         * @param HTMLElement buttonContainer : The button corresponding to the respective file if the file was submitted to Fine Uploader using a tracked button
+         */
+        (data: BlobDataObject, buttonContainer?: HTMLElement): Promise<any> | void;
+    }
+
+    /**
+     * onValidateBatch function type
+     */
+    interface OnValidateBatch {
+        /**
+         * @param BlobDataObject[] fileOrBlobDataArray : An array of Objects with name and size properties
+         * @param HTMLElement buttonContainer : The button corresponding to the respective file if the file was submitted to Fine Uploader using a tracked button
+         */
+        (fileOrBlobDataArray: BlobDataObject[], buttonContainer: HTMLElement): Promise<any> | void;
+    }
+
+    /**
+     * Core callback functions
+     */
+    interface CoreEvents {
+        /**
+         * **Called before each automatic retry attempt for a failed item**
+         */
+        onAutoRetry?: OnAutoRetry;
+        /**
+         * **Called when the item has been canceled. Return `false` to prevent the upload from being canceled.**
+         * 
+         * Also can return a promise if non-blocking work is required here. Calling `failure()` on the promise is equivalent to returning `false`. 
+         * If using a Promise, then processing of the cancel request will be deferred until the promise is fullfilled. 
+         * Since there is no way to 'pause' the upload in progress while waiting for the promise to be fullfilled the upload may actually complete until the promise has actually be fullfilled
+         */
+        onCancel?: OnCancel;
+        /**
+         * **Called when the item has finished uploading.**
+         * 
+         * The `responseJSON` will contain the raw response from the server including the 'success' property which indicates whether the upload succeeded.
+         */
+        onComplete?: OnComplete;
+        /**
+         * **Called when all submitted items have reached a point of termination.**
+         * 
+         * A file has reached a point of termination if it has been cancelled, rejected, or uploaded (failed or successful). 
+         * For example, if a file in the group is paused, and all other files in the group have uploaded successfully the allComplete event will not be invoked for the group until that paused file is either continued and completes the uploading process, or canceled. 
+         * This event will not be called if all files in the group have been cancelled or rejected (i.e. if none of the files have reached a status of `qq.status.UPLOAD_SUCCESSFUL` or `qq.status.UPLOAD_FAILED`)
+         */
+        onAllComplete?: OnAllComplete;
+        /**
+         * **Called just before a delete request is sent for the associated item.** 
+         * 
+         * Note that this is not the correct callback to influence the delete request. 
+         * To do that, use the `onSubmitDelete` callback instead
+         */
+        onDelete?: OnDelete;
+        /**
+         * **Called just after receiving a response from the server for a delete file request**
+         */
+        onDeleteComplete?: OnDeleteComplete;
+        /**
+         * **Called whenever an exceptional condition occurs**
+         */
+        onError?: OnError;
+        /**
+         * **Called before each manual retry attempt.**
+         * 
+         * Return `false` to prevent this and all future retry attempts on the associated item
+         */
+        onManualRetry?: OnManualRetry;
+        /**
+         * **Called when a pasted image has been received (before upload).**
+         * 
+         * The pasted image is represented as a `Blob`. Also can return a `Promise` if non-blocking work is required here. 
+         * If using a `Promise` the value of the success parameter must be the name to associate with the pasted image. 
+         * If the associated attempt is marked a failure then you should include a string explaining the reason in your failure callback for the `Promise`
+         * 
+         * ###NOTE:
+         * The `promptForName` option, if `true`, will effectively wipe away any custom implementation of this callback. 
+         * The two are not meant to be used together. This callback is meant to provide an alternative means to provide a name for a pasted image. 
+         * If you are using Fine Uploader Core mode then you can display your own prompt for the name by overriding the default implementation of this callback
+         */
+        onPasteReceived?: OnPasteReceived;
+        /**
+         * **Called during the upload, as it progresses, but only for the AJAX uploader.**
+         * 
+         * For chunked uploads, this will be called for each chunk
+         * Useful for implementing a progress bar
+         */
+        onProgress?: OnProgress;
+        /**
+         * **Called just before an upload is resumed.**
+         * 
+         * See the `uploadChunk` event for more info on the `chunkData` object
+         */
+        onResume?: OnResume;
+        /**
+         * **Invoked when a session request has completed.**
+         * 
+         * The `response` will be either an `Array` containing the response data or `null` if the response did not contain valid JSON. 
+         * The `success` parameter will be `false` if ANY of the file items represented in the response could not be parsed (due to bad syntax, missing name/UUID property, etc)
+         */
+        onSessionRequestComplete?: OnSessionRequestComplete;
+        /**
+         * **Invoked whenever the status changes for any item submitted by the uploader.**
+         *          
+         * The status values correspond to those found in the `qq.status` object. 
+         * 
+         * For reference:
+         * * `SUBMITTED`
+         * * `QUEUED`
+         * * `UPLOADING`
+         * * `UPLOAD_RETRYING`
+         * * `UPLOAD_FAILED`
+         * * `UPLOAD_SUCCESSFUL`
+         * * `CANCELED`
+         * * `REJECTED`
+         * * `DELETED`
+         * * `DELETING`
+         * * `DELETE_FAILED`
+         * * `PAUSED`                                   
+         */
+        onStatusChange?: OnStatusChange;
+        /**
+         * **Called when the item has been selected and is a candidate for uploading**
+         * 
+         * This does not mean the item is going to be uploaded. Return `false` to prevent submission to the uploader. 
+         * A promise can be used if non-blocking work is required. Processing of this item is deferred until the promise is fullfilled. 
+         * If a promise is returned, a call to failure is the same as returning `false`
+         */
+        onSubmit?: OnSubmit;
+        /**
+         * **Called before an item has been marked for deletion has been submitted to the uploader**
+         * 
+         * A promise can be used if non-blocking work is required. 
+         * Processing of this item is deferred until the promise is fullfilled. 
+         * If a promise is returned, a call to failure is the same as returning `false`.
+         * 
+         * Use this callback to influence the delete request. 
+         * For example, you can change the custom parameters sent with the underlying delete request using the `setDeleteParams` API method
+         */
+        onSubmitDelete?: OnSubmitDelete;
+        /**
+         * **Called when the item has been successfully submitted to the uploader.**
+         * 
+         * The file will upload immediately if there is:
+         * * a) at least one free connection (see: maxConnections option) and
+         * * b) autoUpload is set to true (see autoUpload option)
+         * 
+         * The callback is invoked after the 'submit' event is handled without returning a false value. 
+         * In Fine Uploader Core mode it is usually safe to assume that the associated elements in the UI representing the associated file have already been added to the DOM immediately before this callback is invoked
+         */
+        onSubmitted?: OnSubmitted;
+        /**
+         * **Called during a batch of uploads, as they progress, but only for the AJAX uploader.**
+         * 
+         * This represents the total progress of all files in the batch. Useful for implementing an aggregate progress bar.
+         */
+        onTotalProgress?: OnTotalProgress;
+        /**
+         * **Called just before an item begins uploading to the server.**
+         */
+        onUpload?: OnUpload;
+        /**
+         * **Called just before a chunk request is sent.**
+         */
+        onUploadChunk?: OnUploadChunk;
+        /**
+         * **This is similar to the `complete` event, except it is invoked after each chunk has been successfully uploaded.**
+         * 
+         * See the `uploadChunk` event for more information on the `chunkData` object
+         */
+        onUploadChunkSuccess?: OnUploadChunkSuccess;
+        /**
+         * **Called once for each selected, dropped, or `addFiles` submitted file.**
+         * 
+         * This callback is always invoked before the default Fine Uploader validators execute.
+         * 
+         * This event will not be called if you return `false` in your `validateBatch` event handler, or if the `stopOnFirstInvalidFile` validation option is `true` and the `validate` event handler has returned `false` for an item.
+         * 
+         * A promise can be used if non-blocking work is required. Processing of this item is deferred until the promise is fullfilled. 
+         * If a promise is returned, a call to `failure` is the same as returning `false`.
+         * 
+         * A buttonContainer element will be passed as the last argument, provided the file was submitted using a Fine Uploader tracked button.
+         * 
+         * The `blobData` object has two properties: `name` and `size`. The `size` property will be undefined for browsers without File API support.
+         */
+        onValidate?: OnValidate;
+        /**
+         * **This callback is always invoked before the default Fine Uploader validators execute.**
+         * 
+         * This event will not be called if you return `false` in your `validateBatch` event handler, or if the `stopOnFirstInvalidFile` validation option is `true` and the `validate` event handler has returned `false` for an item.
+         * 
+         * A promise can be used if non-blocking work is required. Processing of this item is deferred until the promise is fullfilled. If a promise is returned, a call to `failure` is the same as returning `false`.
+         * 
+         * A buttonContainer element will be passed as the last argument, provided the file was submitted using a Fine Uploader tracked button.
+         * 
+         * The `fileOrBlobDataArray` object has two properties: `name` and `size`. The `size` property will be undefined for browsers without File API support.
+         */
+        onValidateBatch?: OnValidateBatch;
+    }
+    /* ====================================== END - Core Callback functions ======================================== */
 
     /**
      * Contains Core options 
@@ -911,6 +1399,10 @@ declare namespace FineUploader {
          * WorkArounds
          */
         workarounds?: WorkArounds;
+        /**
+         * Core callback functions
+         */
+        callbacks?: CoreEvents;
 
     }
 
@@ -1254,12 +1746,9 @@ declare namespace FineUploader {
 
 
     /**
-     * Contains all the traditional Core and UI methods, events and options
+     * Contains all the traditional Core and UI methods
      */
     interface Core {
-
-        /* ======================================= CORE METHODS ========================================== */
-
         /**
          * The FineUploader Core only constructor 
          */
@@ -1312,8 +1801,6 @@ declare namespace FineUploader {
          * @param number id : The file's id
          */
         deleteFile(id: number): void;
-
-
 
         /**
          * Draws a thumbnail
@@ -1520,8 +2007,6 @@ declare namespace FineUploader {
          */
         uploadStoredFiles(): void;
 
-        /* ======================================= END - CORE METHODS ========================================== */
-
         /* ======================================= UI METHODS ========================================== */
 
         /**
@@ -1556,13 +2041,182 @@ declare namespace FineUploader {
          * @param HTMLElement element : The element to un-mark as a drop zone
          */
         removeExtraDropzone(element: HTMLElement): void;
+        /* ===================================== END - UI METHODS ======================================= */
 
-        /* ======================================= END - UI METHODS ========================================== */
+        /* ====================================== UTILITY METHODS ======================================= */
 
+        /**
+         * **Selects an HTMLElement and returns a qq 'wrapped object.'**
+         * 
+         * @param HTMLElement element : A HTML element.
+         * @returns qq : A wrapped DOM object with a variety of cross-browser shims as methods.
+         * 
+         * qq functions similar to the jQuery function in terms of the operations it can perform. 
+         * For now, though, qq only accepts HTMLElements as input. 
+         * 
+         * To be able to use the qq methods, first one must wrap some HTMLElement in the qq function as such:
+         * 
+         * ###Example:
+         * if you wanted to hide an element with the id of "myDiv":
+         * 
+         * ```typescript         
+         * let myDiv: HTMLElement = document.getElementById("myDiv");
+         * let qqMyDiv: FineUploader.qq = qq(myDiv);
+         * // Now we can call other qq methods:
+         * qqMyDiv.hide();
+         * let children = qqMyDiv.children();
+         * ``` 
+         */
+        (element: HTMLElement): qq;
+
+        /**
+         * **Returns an array of all immediate children of this element.**
+         * 
+         * @param HTMLElement element : An HTMLElement or an already wrapped qq object
+         * @returns HTMLElement[] : An array of HTMLElements who are children of the `element` parameter
+         */
+        children(element: HTMLElement): HTMLElement[];
+
+        /**
+         * **Returns true if the element contains the passed element.**
+         * 
+         * @param HTMLElement element : An HTMLElement or an already wrapped qq object
+         * @returns boolean : The result of the contains test
+         */
+        contains(element: HTMLElement): boolean;
+
+        /**
+         * **Returns `true` if the attribute exists on the element and the value of the attribute is not 'false' case-insensitive.**
+         * 
+         * @param string attributeName : An attribute to test for
+         * @returns boolean : The result of the `hasAttribute` test
+         */
+        hasAttribute(attributeName: string): boolean;
+
+        /**
+         * **Clears all text for this element**
+         */
+        clearText();
+
+        /**
+         * **Inserts the element directly before the passed element in the DOM.**
+         * 
+         * @param HTMLElement element : the `element` before which an element has to be inserted
+         */
+        insertBefore(element: HTMLElement): void;
+
+        /**
+         * **Removes the element from the DOM.**
+         */
+        remove(): void;
+
+        /**
+         * **Sets the inner text for this element.**
+         * 
+         * @param string text : The text to set
+         */
+        setText(text: string): void;
+
+        /**
+         * **Add a class to this element.**
+         * 
+         * @param string className : The name of the class to add to the element
+         */
+        addClass(className: string): void;
+
+        /**
+         * **Add CSS style(s) to this element.**
+         * 
+         * @param Object styles : An object with styles to apply to this element
+         * @returns Object : Returns the current context to allow method chaining
+         */
+        css(styles: any): qq;
+
+        /**
+         * **Returns an array of all descendants of this element that contain a specific class name.**
+         * 
+         * @param string className : The name of the class to look for in each element
+         * @returns HTMLElement[] : An array of `HTMLElements
+         */
+        getByClass(className: string): HTMLElement[];
+
+        /**
+         * **Returns `true` if the element has the class name**
+         * 
+         * @param string className : The name of the class to look for in each element
+         * @returns boolean : Result of the `hasClass` test
+         */
+        hasClass(className: string): boolean;
+
+        /**
+         * **Hide this element.**
+         * 
+         * @returns Object : Returns the current context to allow method chaining
+         */
+        hide(): qq;
+
+        /**
+         * **Remove the provided class from the element.**
+         * @param string className : The name of the class to look for in each element
+         * @returns Object : Returns the current context to allow method chaining
+         */
+        removeClass(className: string): qq;
+
+        /**
+         * **Attach an event handler to this element for a specific DOM event.**
+         * 
+         * @param string event : A valid `DOM Event`
+         * @param function handler : A function that will be invoked whenever the respective event occurs
+         * @returns function : Call this function to detach the event
+         */
+        attach(event: string, handler: () => any | void): () => any | void;
+
+        /**
+         * **Detach an already attached event handler from this element for a specific DOM event**
+         * 
+         * @param string event : A valid `DOM Event`
+         * @param function originalHandler : A function that will be detached from this event
+         * @returns Object : Call this function to detach the event
+         */
+        detach(event: string, originalHandler: () => any | void): qq;
+
+        /**
+         * **Shim for `Function.prototype.bind`**
+         * 
+         * Creates a new function that, when called, has its `this` keyword set to the provided context. 
+         * Pass comma-separated values after the `context` parameter for all arguments to be passed into the new function (when invoked). 
+         * You can still pass in additional arguments during invocation.
+         * 
+         * @param function oldFunc : The function that will be bound to
+         * @param Object context : The context the function will assume
+         * @returns function : A new function, same as the old one, but bound to the passed in `context`
+         */
+        bind(oldFunc: () => any | void, context: any): () => any;
+
+        /**
+         * **Iterates through a collection, passing the key and value into the provided callback. `return false;` to stop iteration.**
+         * 
+         * @param Array or Object : 
+         * @param function callback : A function that will be called for each item returned by looping through the iterable. This function takes an index and an item.
+         */
+        each(iterable: any[] | any, callback: (index: number, item: any) => any | void): () => any | void;
+
+        /**
+         * **Shallowly copies the parameters of secondobj to firstobj. if extendnested is true then a deep-copy is performed.**
+         * 
+         * @param Object firstObj : The object to copy parameters to
+         * @param Object secondObj : The object to copy parameters from
+         * @param boolean extendNested : If `true` then a deep-copy is performed, else a shallow copy
+         * @returns Object : The new object created by the extension
+         */
+        extend (firstObj: any, secondObj: any, extendNested?: boolean): any;
+
+
+        /* ====================================== END - UTILITY METHODS ================================= */
     }
+    /* ========================================================== END - CORE & UI =============================================================== */
 
-
-
+    /* ========================================================== AMAZON S3 ===================================================================== */
     /**
      * S3CredentialsOptions
      */
@@ -1696,6 +2350,9 @@ declare namespace FineUploader {
         serverSideEncryption: boolean;
     }
 
+    /**
+     * S3RequestOptions
+     */
     interface S3RequestOptions extends RequestOptions {
         /**
          * Your AWS public key. NOT YOUR SECRET KEY. Ignored if `credentials` have been set
@@ -1833,6 +2490,26 @@ declare namespace FineUploader {
     }
 
     /**
+     * onCredentialsExpired function type
+     */
+    interface OnCredentialsExpired {
+        (): Promise<any>;
+    }
+
+    /**
+     * S3 Callback functions
+     */
+    interface S3Events extends CoreEvents {
+        /**
+         * **Called before a request is sent to S3 if the temporary credentials have expired.**
+         * 
+         * You must return a promise. If your attempt to refresh the temporary credentials is successful, you must fulfill the promise via the success method, passing the new credentials object. 
+         * Otherwise, call failure with a descriptive reason.
+         */
+        onCredentialsExpired?: OnCredentialsExpired;
+    }
+
+    /**
      * NOT WORKING YET
      */
     interface S3UIOptions extends S3CoreOptions, UIOptions {
@@ -1846,8 +2523,6 @@ declare namespace FineUploader {
      * Contains S3 methods and events
      */
     interface S3 extends Core {
-        /* ===================================== S3 METHODS ============================================== */
-
         /**
          * Retrieve the S3 bucket name associated with the passed file (id). Note that the bucket name is not available before the file has started uploading
          * @param number fileId : An ID corresponding to a file
@@ -1905,13 +2580,11 @@ declare namespace FineUploader {
          * @param number id : A file id to apply these upload success parameters to
          */
         setUploadSuccessParams(newParams: any, id?: number): void;
-
-
-        /* ===================================== END - S3 METHODS ============================================== */
     }
+    /* ========================================================== END - S3 ===================================================================== */
 
 
-
+    /* ========================================================== AZURE ===================================================================== */
 
     /**
      * AzureChunkingOptions
@@ -1944,7 +2617,7 @@ declare namespace FineUploader {
      * AzureBlobPropertyNameFunction
      */
     interface AzureBlobPropertyNameFunction {
-        (id: number) : Promise<any> | string;
+        (id: number): Promise<any> | string;
     }
 
     /**
@@ -2131,6 +2804,7 @@ declare namespace FineUploader {
         /* ===================================== END - AZURE METHODS ============================================== */
     }
 
+    /* ========================================================== END - AZURE ===================================================================== */
 
 
     /**

@@ -8,3 +8,12 @@ coreOptions.request.endpoint = "/uploads";
 
 let uploader = qq.FineUploader(coreOptions);
 uploader.uploadStoredFiles();
+
+//utility functions
+let myDiv: HTMLElement, qqMyDiv: FineUploader.qq;
+myDiv = document.getElementById("myDiv");
+qqMyDiv = qq(myDiv);
+
+// Now we can call other qq methods:
+qqMyDiv.hide();
+let children: HTMLElement[] = qqMyDiv.children(myDiv);
