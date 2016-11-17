@@ -1,12 +1,19 @@
+/**
+ * Prepare/set options for the core FineUploader
+ */
 let coreOptions: FineUploader.CoreOptions;
 coreOptions.debug = true;
 coreOptions.autoUpload = false;
 coreOptions.request.endpoint = "/uploads";
 
-//Uncommenting the following generates an error - only a void function can be called with the 'new' keyword. 
-//let uploader1 = new qq.FineUploader(coreOptions);
+/**
+ * Instantiate the FineUploader and pass in the coreOptions
+ */
+let uploader: FineUploader.qq = new qq.FineUploader(coreOptions);
 
-let uploader = qq.FineUploader(coreOptions);
+/**
+ * Manually upload files to the server. This method should be called on some button click event
+ */
 uploader.uploadStoredFiles();
 
 //utility functions
