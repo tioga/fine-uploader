@@ -1,15 +1,20 @@
 /**
  * Prepare/set options for the core FineUploader
  */
-let coreOptions: FineUploader.CoreOptions;
-coreOptions.debug = true;
-coreOptions.autoUpload = false;
-coreOptions.request.endpoint = "/uploads";
+let uiOptions: FineUploader.UIOptions = {
+    debug: false,
+    autoUpload: false,
+    element: document.getElementById('fine-uploader-manual-trigger'),
+    template: "qq-template-manual-trigger",
+    request: {
+        endpoint: "/server/upload"
+    }
+};
 
 /**
- * Instantiate the FineUploader and pass in the coreOptions
+ * Instantiate the FineUploader and pass in the uiOptions
  */
-let uploader: FineUploader.qq = new qq.FineUploader(coreOptions);
+let uploader: FineUploader.qq = new qq.FineUploader(uiOptions);
 
 /**
  * Manually upload files to the server. This method should be called on some button click event
