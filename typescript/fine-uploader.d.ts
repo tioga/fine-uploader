@@ -3,17 +3,7 @@
 // Definitions by: Sukhdeep Singh <https://github.com/SinghSukhdeep>
 
 /**
- * **The FineUploader namespace contains all the methods, options, events and types**
- * 
- * ###Example Usage:
- * declaring core options:
- * ```typescript
- * let coreOptions: FineUploader.CoreOptions;
- * ```
- * then do something as:
- * ```typescript
- * coreOptions.autoUpload = false;
- * ```
+ * The FineUploader namespace contains all the methods, options, events and types
  */
 declare namespace FineUploader {
 
@@ -23,27 +13,27 @@ declare namespace FineUploader {
      */
     interface ResizeInfo {
         /**
-         * **The original `File` or `Blob` object, if available.**
+         * The original `File` or `Blob` object, if available.
          */
         blob?: File | Blob;
         /**
-         * **Desired height of the image after the resize operation.**
+         * Desired height of the image after the resize operation.
          */
         height?: number;
         /**
-         * **The original HTMLImageElement object, if available.**
+         * The original HTMLImageElement object, if available.
          */
         image?: HTMLImageElement;
         /**
-         * **`HTMLCanvasElement` element containing the original image data (not resized).**
+         * `HTMLCanvasElement` element containing the original image data (not resized).
          */
         sourceCanvas?: HTMLCanvasElement;
         /**
-         * **`HTMLCanvasElement` element containing the `HTMLCanvasElement` that should contain the resized image.**
+         * `HTMLCanvasElement` element containing the `HTMLCanvasElement` that should contain the resized image.
          */
         targetCanvas?: HTMLCanvasElement;
         /**
-         * **Desired width of the image after the resize operation.**
+         * Desired width of the image after the resize operation.
          */
         width?: number;
     }
@@ -53,7 +43,7 @@ declare namespace FineUploader {
      */
     interface CustomResizerCallBack {
         /**
-         * **Contribute this function to manually resize images using alternate 3rd party libraries**
+         * Contribute this function to manually resize images using alternate 3rd party libraries
          * 
          * @param ResizeInfo resizeInfo : the ResizeInfo object containing all the resize values/options
          * @returns Promise : Once the resize is complete, the function must return a promise
@@ -66,13 +56,13 @@ declare namespace FineUploader {
      */
     interface BlobWrapper {
         /**
-         * **the bytes of the `Blob` object being uploaded**
+         * the bytes of the `Blob` object being uploaded
          */
-        blob: Blob;
+        blob?: Blob;
         /**
-         * 	**the name of the `Blob`**
+         * the name of the `Blob`
          */
-        name: string;
+        name?: string;
     }
 
     /**
@@ -80,21 +70,21 @@ declare namespace FineUploader {
      */
     interface CanvasWrapper {
         /**
-         * 	**the `<canvas>` to be converted to a file & then uploaded**
+         * the `<canvas>` to be converted to a file & then uploaded
          */
-        canvas: HTMLCanvasElement;
+        canvas?: HTMLCanvasElement;
         /**
-         * **the name to assign to the created file**
+         * the name to assign to the created file
          */
-        name: string;
+        name?: string;
         /**
-         * **`1`-`100` value indicating the desired quality of the converted file (only for `image/jpeg`)**
+         * `1`-`100` value indicating the desired quality of the converted file (only for `image/jpeg`)
          */
-        quality: number;
+        quality?: number;
         /**
-         * **MIME type of the file to create from this `<canvas>`**
+         * MIME type of the file to create from this `<canvas>`
          */
-        type: MimeType;
+        type?: MimeType;
     }
 
     /**
@@ -102,17 +92,17 @@ declare namespace FineUploader {
      */
     interface ResumableFileObject {
         /**
-         * 	**filename**
+         * filename
          */
-        name: string;
+        name?: string;
         /**
-         * 	**the unique id**
+         * the unique id
          */
-        uuid: number;
+        uuid?: number;
         /**
-         * **the index of the part where the resume will start from**
+         * the index of the part where the resume will start from
          */
-        partIdx: number;
+        partIdx?: number;
     }
 
     /**
@@ -120,9 +110,9 @@ declare namespace FineUploader {
      */
     interface S3ResumableFileObject extends ResumableFileObject {
         /**
-         * **The associated object's S3 key**
+         * The associated object's S3 key
          */
-        key: string;
+        key?: string;
     }
 
     /**
@@ -130,9 +120,9 @@ declare namespace FineUploader {
      */
     interface AzureResumableFileObject extends ResumableFileObject {
         /**
-         * **The associated file's blob name in Azure Blob Storage**
+         * The associated file's blob name in Azure Blob Storage
          */
-        key: string;
+        key?: string;
     }
 
     /**
@@ -140,17 +130,17 @@ declare namespace FineUploader {
      */
     interface UploadFilter {
         /**
-         * **the id of the file**
+         * the id of the file
          */
-        id: number | number[];
+        id?: number | number[];
         /**
-         * **the uuid of the file**
+         * the uuid of the file
          */
-        uuid: number | number[];
+        uuid?: number | number[];
         /**
-         * **status of the file**
+         * status of the file
          */
-        status: string | string[];
+        status?: string | string[];
     }
 
     /**
@@ -158,13 +148,13 @@ declare namespace FineUploader {
      */
     interface FoundUploadItems extends UploadFilter {
         /**
-         * **the name of the file**
+         * the name of the file
          */
-        name: string;
+        name?: string;
         /**
-         * **the size of the file**
+         * the size of the file
          */
-        size: string;
+        size?: string;
     }
 
     /**
@@ -180,11 +170,11 @@ declare namespace FineUploader {
          */
         orient?: boolean;
         /**
-         * **defaults to the type of the reference image**
+         * defaults to the type of the reference image
          */
         type?: string;
         /**
-         * **number between `0` and `100`**
+         * number between `0` and `100`
          * 
          * @default `80`
          */
@@ -194,7 +184,7 @@ declare namespace FineUploader {
          */
         includeExif?: boolean;
         /**
-         * **Ignored if the current browser does not support image previews.**
+         * Ignored if the current browser does not support image previews.
          * 
          * If you want to use an alternate library to resize the image, you must contribute a function for this option that returns a `Promise`. 
          * 
@@ -208,7 +198,7 @@ declare namespace FineUploader {
      * formatFileName function type
      */
     interface FormatFileNameFuncton {
-        (fileOrBlobName): String;
+        (fileOrBlobName: string): String | void;
     }
 
     /**
@@ -216,7 +206,7 @@ declare namespace FineUploader {
      */
     interface BlobsOptions {
         /**
-         * **The default name to be used for nameless `Blob`s**
+         * The default name to be used for nameless `Blob`s
          * 
          * @default `Misc data`
          */
@@ -228,7 +218,7 @@ declare namespace FineUploader {
      */
     interface CameraOptions {
         /**
-         * **`null` allows camera access on the default button in iOS.** 
+         * `null` allows camera access on the default button in iOS. 
          * 
          * Otherwise provide an extra button container element to target
          * 
@@ -236,7 +226,7 @@ declare namespace FineUploader {
          */
         button?: HTMLElement;
         /**
-         * **Enable or disable camera access on iOS (iPod, iPhone, and iPad) devices.**
+         * Enable or disable camera access on iOS (iPod, iPhone, and iPad) devices.
          *  
          * ###Note: 
          * Enabling this will disable multiple file selection
@@ -251,7 +241,7 @@ declare namespace FineUploader {
      */
     interface ConcurrentOptions {
         /**
-         * **Allow multiple chunks to be uploaded simultaneously per file**
+         * Allow multiple chunks to be uploaded simultaneously per file
          * 
          * @default `false`
          */
@@ -267,13 +257,13 @@ declare namespace FineUploader {
          */
         concurrent?: ConcurrentOptions;
         /**
-         * **Enable or disable splitting the file separate chunks. Each chunks is sent in a separate request**
+         * Enable or disable splitting the file separate chunks. Each chunks is sent in a separate requested
          * 
          * @default `false`
          */
         enabled?: boolean;
         /**
-         * **Ensure every file is uploaded in chunks, even if the file can only be split up into 1 chunk.**
+         * Ensure every file is uploaded in chunks, even if the file can only be split up into 1 chunk.
          * 
          * Does not apply if chunking is not possible in the current browser
          * 
@@ -281,17 +271,17 @@ declare namespace FineUploader {
          */
         mandatory?: boolean;
         /**
-         * **The maximum size of each chunk, in bytes**
+         * The maximum size of each chunk, in bytes
          * 
          * @default `2000000`
          */
         partSize?: number;
         /**
-         * **ParamNamesOptions**     
+         * ParamNamesOptions
          */
         paramNames?: ParamNamesOptions;
         /**
-         * **SuccessOptions**
+         * SuccessOptions
          */
         success?: SuccessOptions;
 
@@ -302,37 +292,37 @@ declare namespace FineUploader {
      */
     interface ParamNamesOptions {
         /**
-         * **Name of the parameter passed with a chunked request that specifies the size in bytes of the associated chunk**
+         * Name of the parameter passed with a chunked request that specifies the size in bytes of the associated chunk
          * 
          * @default `'qqchunksize'`
          */
         chunkSize?: string;
         /**
-         * **Name of the parameter passed with a chunked request that specifies the starting byte of the associated chunk**
+         * Name of the parameter passed with a chunked request that specifies the starting byte of the associated chunk
          * 
          * @default `'qqpartbyteoffset'`
          */
         partByteOffset?: string;
         /**
-         * **Name of the parameter passed with a chunked request that specifies the index of the associated partition**
+         * Name of the parameter passed with a chunked request that specifies the index of the associated partition
          * 
          * @default `'qqpartindex'`
          */
         partIndex?: string;
         /**
-         * **Name of the parameter passed with a chunked request that specifies the total number of chunks associated with the `File` or `Blob`**
+         * Name of the parameter passed with a chunked request that specifies the total number of chunks associated with the `File` or `Blob`
          * 
          * @default `'qqtotalparts'`
          */
         totalParts?: string;
         /**
-         * **Sent with the first request of the resume with a value of `true`**
+         * Sent with the first request of the resume with a value of `true`
          * 
          * @default `'qqresume'`
          */
         resuming?: string;
         /**
-         * **totalFileSize**
+         * totalFileSize
          * 
          * @default `'qqtotalfilesize'`
          */
@@ -344,7 +334,7 @@ declare namespace FineUploader {
      */
     interface SuccessOptions {
         /**
-         * **Endpoint to send a POST after all chunks have been successfully uploaded for each file.**
+         * Endpoint to send a POST after all chunks have been successfully uploaded for each file.
          * 
          * Required if the `concurrent.enabled` option is set
          * 
@@ -358,19 +348,19 @@ declare namespace FineUploader {
      */
     interface CorsOptions {
         /**
-         * **Enable or disable cross-origin requests from IE9 and older where XDomainRequest must be used**
+         * Enable or disable cross-origin requests from IE9 and older where XDomainRequest must be used
          * 
          * @default `false`
          */
         allowXdr?: boolean;
         /**
-         * **Enable or disable cross-domain requests**
+         * Enable or disable cross-domain requests
          * 
          * @default `false`
          */
         expected?: boolean;
         /**
-         * **Enable or disable sending credentials along with each cross-domain request. Ignored if allowXdr is true and IE9 is being used**
+         * Enable or disable sending credentials along with each cross-domain request. Ignored if allowXdr is true and IE9 is being used
          * 
          * @default `false`
          */
@@ -382,25 +372,25 @@ declare namespace FineUploader {
      */
     interface DeleteFileOptions {
         /**
-         * **Any additional headers to attach to all delete file requests**
+         * Any additional headers to attach to all delete file requests
          * 
          * @default `{}`
          */
         customHeaders?: any;
         /**
-         * **Enable or disable deletion of uploaded files**
+         * Enable or disable deletion of uploaded files
          * 
          * @default `false`
          */
         enabled?: boolean;
         /**
-         * **The endpoint to which delete file requests are sent.**
+         * The endpoint to which delete file requests are sent.
          * 
          * @default `'/server/upload'`
          */
         endpoint?: string;
         /**
-         * **Set the method to use for delete requests.** 
+         * Set the method to use for delete requests. 
          * 
          * Accepts `'POST'` or `'DELETE'`
          * 
@@ -408,7 +398,7 @@ declare namespace FineUploader {
          */
         method?: string;
         /**
-         * **Any additional parameters to attach to delete file requests**
+         * Any additional parameters to attach to delete file requests
          * 
          * @default `{}`
          */
@@ -420,13 +410,13 @@ declare namespace FineUploader {
      */
     interface ExtraButtonsOptions {
         /**
-         * **The container element for the upload button**
+         * The container element for the upload button
          * 
          * @default `undefined`
          */
         element: HTMLElement;
         /**
-         * **This value will be used when creating the `title` attribute for the underlying `<input type="file">`.**
+         * This value will be used when creating the `title` attribute for the underlying `<input type="file">`.
          *  
          * If not provided, the `text.fileInputTitle` option will be used instead
          * 
@@ -434,19 +424,19 @@ declare namespace FineUploader {
          */
         fileInputTitle?: string;
         /**
-         * **`true` to allow folders to be selected, `false` to allow files to be selected.**
+         * `true` to allow folders to be selected, `false` to allow files to be selected.
          * 
          * @default `false`
          */
         folders?: boolean;
         /**
-         * **Specify to override the default `multiple` value**
+         * Specify to override the default `multiple` value
          * 
          * @default `true`
          */
         multiple?: boolean;
         /**
-         * **Specify to override the default `validation` option specified.**
+         * Specify to override the default `validation` option specified.
          *  
          * Any `validation` properties not specified will be inherited from the default `validation` option
          * 
@@ -460,25 +450,25 @@ declare namespace FineUploader {
      */
     interface FormOptions {
         /**
-         * **This can be the ID of the <form> or a reference to the <form> element**
+         * This can be the ID of the <form> or a reference to the <form> element
          * 
          * @default `'qq-form'`
          */
-        element: string | HTMLElement;
+        element?: string | HTMLElement;
         /**
-         * **If Fine Uploader is able to attach to a form, this value takes the place of the base `autoUpload` option**
+         * If Fine Uploader is able to attach to a form, this value takes the place of the base `autoUpload` option
          * 
          * @default `false`
          */
-        autoUpload: boolean;
+        autoUpload?: boolean;
         /**
-         * **Set this to `false` if you do not want Fine Uploader to intercept attempts to submit your form.**
+         * Set this to `false` if you do not want Fine Uploader to intercept attempts to submit your form.
          * 
          * By default, Fine Uploader will intercept submit attempts and instead upload all submitted files, including data from your form in each upload request
          * 
          * @default `true`
          */
-        interceptSubmit: boolean;
+        interceptSubmit?: boolean;
     }
 
     /**
@@ -486,79 +476,79 @@ declare namespace FineUploader {
      */
     interface Messages {
         /**
-         * **Text passed to the error event handler if a submitted item is zero bits**
+         * Text passed to the error event handler if a submitted item is zero bits
          * 
          * @default `'{file} is empty, please select files again without it.'`
          */
         emptyError?: string;
         /**
-         * **Text passed to the error event handler if an image is too tall**
+         * Text passed to the error event handler if an image is too tall
          * 
          * @default `'Image is too tall.'`
          */
         maxHeightImageError?: string;
         /**
-         * **Text passed to the error event handler if an image is too wide**
+         * Text passed to the error event handler if an image is too wide
          * 
          * @default `'Image is too wide.'`
          */
         maxWidthImageError?: string;
         /**
-         * **Text passed to the error event handler if an image is not tall enough**
+         * Text passed to the error event handler if an image is not tall enough
          * 
          * @default `'Image is not tall enough.'`
          */
         minHeightImageError?: string;
         /**
-         * **Text passed to the error event handler if an image is not wide enough**
+         * Text passed to the error event handler if an image is not wide enough
          * 
          * @default `'Image is not wide enough.'`
          */
         minWidthImageError?: string;
         /**
-         * **Text passed to the error event handler if the item is too small**
+         * Text passed to the error event handler if the item is too small
          * 
          * @default `'{file} is too small, minimum file size is {minSizeLimit}.'`
          */
         minSizeError?: string;
         /**
-         * **Text passed to the error event handler if any empty array of items is submitted**
+         * Text passed to the error event handler if any empty array of items is submitted
          * 
          * @default `'No files to upload.'`
          */
         noFilesError?: string;
         /**
-         * **Text displayed to the user when they attempt to leave the page while uploads are still in progress**
+         * Text displayed to the user when they attempt to leave the page while uploads are still in progress
          * 
          * @default `'The files are being uploaded, if you leave now the upload will be canceled.'`
          */
         onLeave?: string;
         /**
-         * **Text passed to the error event handler if a retry attempt is declared a failed due to a violation of the `validation.itemLimit` rule**
+         * Text passed to the error event handler if a retry attempt is declared a failed due to a violation of the `validation.itemLimit` rule
          * 
          * @default `'Retry failed - you have reached your file limit.'`
          */
         retryFailTooManyItemsError?: string;
         /**
-         * **Text passed to the error event handler if a submitted item is too large.**
+         * Text passed to the error event handler if a submitted item is too large.
          * 
          * @default `'{file} is too large, maximum file size is {sizeLimit}.'`
          */
         sizeError?: string;
         /**
-         * **Text passed to the error event handler if a submit is ignored due to a violation of the `validation.itemLimit` rules**
+         * Text passed to the error event handler if a submit is ignored due to a violation of the `validation.itemLimit` rules
          * 
          * @default `'Too many items ({netItems}) would be uploaded. Item limit is {itemLimit}.'`
          */
         tooManyItemsError?: string;
         /**
-         * **Text passed to the error event handler if an invalid file type is detected**
+         * Text passed to the error event handler if an invalid file type is detected
          * 
          * @default `'{file} has an invalid extension. Valid extension(s): {extensions}.'`
          */
         typeError?: string;
         /**
-         * **Message displayed if the browser is iOS8 Safari and the corresponding workarounds option is not disabled**
+         * Message displayed if the browser is iOS8 Safari and the corresponding workarounds option is not disabled
          * 
          * @default `'Unrecoverable error - this browser does not permit file uploading of any kind due to serious bugs in iOS8 Safari. Please use iOS8 Chrome until Apple fixes these issues.'`
          */
@@ -570,13 +560,13 @@ declare namespace FineUploader {
      */
     interface PasteOptions {
         /**
-         * **The default name given to pasted images**
+         * The default name given to pasted images
          * 
          * @default `'pasted_image'`
          */
         defaultName?: string;
         /**
-         * **Enable this feature by providing any HTMLElement here**
+         * Enable this feature by providing any HTMLElement here
          * 
          * @default `null`
          */
@@ -711,11 +701,11 @@ declare namespace FineUploader {
         /**
          * name property will be appended to the file name of the scaled file
          */
-        name: string;
+        name?: string;
         /**
          * maximum size
          */
-        maxSize: number;
+        maxSize?: number;
         /**
          * MIME type
          */
@@ -903,7 +893,7 @@ declare namespace FineUploader {
          * 
          * @default `0`
          */
-        minSizeLimit: number;
+        minSizeLimit?: number;
         /**
          * The maximum allowable size, in bytes, for an item
          * 
@@ -1248,11 +1238,11 @@ declare namespace FineUploader {
      */
     interface CoreEvents {
         /**
-         * **Called before each automatic retry attempt for a failed item**
+         * Called before each automatic retry attempt for a failed item**
          */
         onAutoRetry?: OnAutoRetry;
         /**
-         * **Called when the item has been canceled. Return `false` to prevent the upload from being canceled.**
+         * Called when the item has been canceled. Return `false` to prevent the upload from being canceled.
          * 
          * Also can return a promise if non-blocking work is required here. Calling `failure()` on the promise is equivalent to returning `false`. 
          * 
@@ -1262,13 +1252,13 @@ declare namespace FineUploader {
          */
         onCancel?: OnCancel;
         /**
-         * **Called when the item has finished uploading.**
+         * Called when the item has finished uploading.
          * 
          * The `responseJSON` will contain the raw response from the server including the 'success' property which indicates whether the upload succeeded.
          */
         onComplete?: OnComplete;
         /**
-         * **Called when all submitted items have reached a point of termination.**
+         * Called when all submitted items have reached a point of termination.
          * 
          * A file has reached a point of termination if it has been cancelled, rejected, or uploaded (failed or successful). 
          * 
@@ -1278,7 +1268,7 @@ declare namespace FineUploader {
          */
         onAllComplete?: OnAllComplete;
         /**
-         * **Called just before a delete request is sent for the associated item.** 
+         * Called just before a delete request is sent for the associated item. 
          * 
          * ###Note: 
          * This is not the correct callback to influence the delete request. 
@@ -1286,21 +1276,21 @@ declare namespace FineUploader {
          */
         onDelete?: OnDelete;
         /**
-         * **Called just after receiving a response from the server for a delete file request**
+         * Called just after receiving a response from the server for a delete file request**
          */
         onDeleteComplete?: OnDeleteComplete;
         /**
-         * **Called whenever an exceptional condition occurs**
+         * Called whenever an exceptional condition occurs**
          */
         onError?: OnError;
         /**
-         * **Called before each manual retry attempt.**
+         * Called before each manual retry attempt.
          * 
          * Return `false` to prevent this and all future retry attempts on the associated item
          */
         onManualRetry?: OnManualRetry;
         /**
-         * **Called when a pasted image has been received (before upload).**
+         * Called when a pasted image has been received (before upload).
          * 
          * The pasted image is represented as a `Blob`. Also can return a `Promise` if non-blocking work is required here.
          * 
@@ -1317,20 +1307,20 @@ declare namespace FineUploader {
          */
         onPasteReceived?: OnPasteReceived;
         /**
-         * **Called during the upload, as it progresses, but only for the AJAX uploader.**
+         * Called during the upload, as it progresses, but only for the AJAX uploader.
          * 
          * For chunked uploads, this will be called for each chunk.
          * Useful for implementing a progress bar
          */
         onProgress?: OnProgress;
         /**
-         * **Called just before an upload is resumed.**
+         * Called just before an upload is resumed.
          * 
          * See the `uploadChunk` event for more info on the `chunkData` object
          */
         onResume?: OnResume;
         /**
-         * **Invoked when a session request has completed.**
+         * Invoked when a session request has completed.
          * 
          * The `response` will be either an `Array` containing the response data or `null` if the response did not contain valid `JSON`.
          * 
@@ -1338,7 +1328,7 @@ declare namespace FineUploader {
          */
         onSessionRequestComplete?: OnSessionRequestComplete;
         /**
-         * **Invoked whenever the status changes for any item submitted by the uploader.**
+         * Invoked whenever the status changes for any item submitted by the uploader.
          *          
          * The status values correspond to those found in the `qq.status` object. 
          * 
@@ -1358,7 +1348,7 @@ declare namespace FineUploader {
          */
         onStatusChange?: OnStatusChange;
         /**
-         * **Called when the item has been selected and is a candidate for uploading**
+         * Called when the item has been selected and is a candidate for uploading**
          * 
          * This does not mean the item is going to be uploaded. Return `false` to prevent submission to the uploader.
          * 
@@ -1368,7 +1358,7 @@ declare namespace FineUploader {
          */
         onSubmit?: OnSubmit;
         /**
-         * **Called before an item has been marked for deletion has been submitted to the uploader**
+         * Called before an item has been marked for deletion has been submitted to the uploader**
          * 
          * A promise can be used if non-blocking work is required. 
          * Processing of this item is deferred until the promise is fullfilled. 
@@ -1379,7 +1369,7 @@ declare namespace FineUploader {
          */
         onSubmitDelete?: OnSubmitDelete;
         /**
-         * **Called when the item has been successfully submitted to the uploader.**
+         * Called when the item has been successfully submitted to the uploader.
          * 
          * The file will upload immediately if there is:
          * * a) at least one free connection (see: maxConnections option) and
@@ -1391,27 +1381,27 @@ declare namespace FineUploader {
          */
         onSubmitted?: OnSubmitted;
         /**
-         * **Called during a batch of uploads, as they progress, but only for the AJAX uploader.**
+         * Called during a batch of uploads, as they progress, but only for the AJAX uploader.
          * 
          * This represents the total progress of all files in the batch. Useful for implementing an aggregate progress bar.
          */
         onTotalProgress?: OnTotalProgress;
         /**
-         * **Called just before an item begins uploading to the server.**
+         * Called just before an item begins uploading to the server.
          */
         onUpload?: OnUpload;
         /**
-         * **Called just before a chunk request is sent.**
+         * Called just before a chunk request is sent.
          */
         onUploadChunk?: OnUploadChunk;
         /**
-         * **This is similar to the `complete` event, except it is invoked after each chunk has been successfully uploaded.**
+         * This is similar to the `complete` event, except it is invoked after each chunk has been successfully uploaded.
          * 
          * See the `uploadChunk` event for more information on the `chunkData` object
          */
         onUploadChunkSuccess?: OnUploadChunkSuccess;
         /**
-         * **Called once for each selected, dropped, or `addFiles` submitted file.**
+         * Called once for each selected, dropped, or `addFiles` submitted file.
          * 
          * This callback is always invoked before the default Fine Uploader validators execute.
          * 
@@ -1426,7 +1416,7 @@ declare namespace FineUploader {
          */
         onValidate?: OnValidate;
         /**
-         * **This callback is always invoked before the default Fine Uploader validators execute.**
+         * This callback is always invoked before the default Fine Uploader validators execute.
          * 
          * This event will not be called if you return `false` in your `validateBatch` event handler, or if the `stopOnFirstInvalidFile` validation option is `true` and the `validate` event handler has returned `false` for an item.
          * 
@@ -1532,7 +1522,7 @@ declare namespace FineUploader {
         /**
          * RequestOptions
          */
-        request: RequestOptions;
+        request?: RequestOptions;
         /**
          * ScalingOptions
          */
@@ -1958,17 +1948,17 @@ declare namespace FineUploader {
      */
     interface Core {
         /**
-         * **The FineUploader Core only constructor**
+         * The FineUploader Core only constructor
          */
         FineUploaderBasic(fineuploaderOptions: CoreOptions): void;
 
         /**
-         * **The FineUploader Core + UI constructor** 
+         * The FineUploader Core + UI constructor
          */
         FineUploader(fineuploaderOptions: UIOptions): void;
 
         /**
-         * **Submit one or more files to the uploader**
+         * Submit one or more files to the uploader
          * 
          * @param any[] files : An array of `File`s, `<input>`s, `Blob`s, `BlobWrapper` objects, `<canvas>`es, or `CanvasWrapper` objects. You may also pass in a `FileList`.
          * @param any params : A set of parameters to send with the file to be added
@@ -1977,31 +1967,31 @@ declare namespace FineUploader {
         addFiles(files: File[] | HTMLInputElement[] | Blob[] | BlobWrapper | HTMLCanvasElement[] | CanvasWrapper | FileList, params?: any, endpoint?: string): void;
 
         /**
-         * **Submit one or more canned/initial files to the uploader**
+         * Submit one or more canned/initial files to the uploader
          * 
          * @param any[] initialFiles : An array of objects that describe files already on the server
          */
         addInitialFiles(initialFiles: any[]): void;
 
         /**
-         * **Cancel the queued or currently uploading item which corresponds to the id**
+         * Cancel the queued or currently uploading item which corresponds to the id
          * 
          * @param number id : The file's id
          */
         cancel(id: number): void;
 
         /**
-         * **Cancels all queued or currently uploading items**
+         * Cancels all queued or currently uploading items
          */
         cancelAll(): void;
 
         /**
-         * **Clears the internal list of stored items. Only applies when autoUpload is false**
+         * Clears the internal list of stored items. Only applies when autoUpload is false
          */
         clearStoredFiles(): void;
 
         /**
-         * **Attempts to continue a paused upload**
+         * Attempts to continue a paused upload
          * 
          * @param number id : A file id
          * @returns boolean : `true` if attempt was successful.
@@ -2009,14 +1999,14 @@ declare namespace FineUploader {
         continueUpload(id: number): boolean;
 
         /**
-         * **Send a delete request to the server for the corresponding file id**
+         * Send a delete request to the server for the corresponding file id
          * 
          * @param number id : The file's id
          */
         deleteFile(id: number): void;
 
         /**
-         * **Draws a thumbnail**
+         * Draws a thumbnail
          * 
          * @param number id : The id of the image file
          * @param HTMLElement targetContainer : The element where the image preview will be drawn. Must be either an <img> or <canvas> element
@@ -2032,7 +2022,7 @@ declare namespace FineUploader {
         drawThumbnail(id: number, targetContainer: HTMLElement, maxSize?: number, fromServer?: boolean, customResizer?: CustomResizerCallBack): Promise<any>;
 
         /**
-         * **Returns the button container element associated with a file**
+         * Returns the button container element associated with a file
          * 
          * @param number id : The file id
          * @returns HTMLElement : The button container element associated with a file, or `undefined` if the file was not submitted via a Fine Uploader controlled upload button.
@@ -2040,7 +2030,7 @@ declare namespace FineUploader {
         getButton(id: number): HTMLElement;
 
         /**
-         * **Returns the file identified by the id. File API browsers only**
+         * Returns the file identified by the id. File API browsers only
          * 
          * @param number id : The file id
          * @returns File | Blob : A `File` or `Blob` object
@@ -2048,7 +2038,7 @@ declare namespace FineUploader {
         getFile(id: number): File | Blob;
 
         /**
-         * **Returns the endpoint associated with a particular file, or the current catch-all endpoint for all files (if no ID is specified).**
+         * Returns the endpoint associated with a particular file, or the current catch-all endpoint for all files (if no ID is specified).
          * 
          * @param number id : The ID of the associated file
          * @return string | string[] : endpoint associated with a particular file, or the current catch-all endpoint for all files (if no ID is specified).
@@ -2056,7 +2046,7 @@ declare namespace FineUploader {
         getEndpoint(id?: number): string | string[];
 
         /**
-         * **Returns the number of items that are either currently uploading or waiting for an available connection (`qq.status.QUEUED`).**
+         * Returns the number of items that are either currently uploading or waiting for an available connection (`qq.status.QUEUED`).
          *  
          * If called inside of a cancel event handler, then this method will return a value that includes the upload associated with the cancel event handler. 
          * This is because the upload will not be canceled until the event handler returns.
@@ -2066,7 +2056,7 @@ declare namespace FineUploader {
         getInProgress(): number;
 
         /**
-         * **Returns the name of the file with the associated id**
+         * Returns the name of the file with the associated id
          * 
          * @param number id : The file id
          * @returns string : Returns the name of the file identified by the id.
@@ -2074,14 +2064,14 @@ declare namespace FineUploader {
         getName(id: number): string;
 
         /**
-         * **Get the number of items that have been successfully uploaded and have not been deleted**
+         * Get the number of items that have been successfully uploaded and have not been deleted
          * 
          * @returns number : The number of items that have been successfully uploaded and not deleted
          */
         getNetUploads(): number;
 
         /**
-         * **Get the ID of the parent file for this scaled file**
+         * Get the ID of the parent file for this scaled file
          * 
          * @param number scaledFileId : The ID of a scaled image file
          * @returns number : Returns the ID of the scaled image's parent file. `null` if this is not a scaled image or a parent cannot be located
@@ -2089,19 +2079,19 @@ declare namespace FineUploader {
         getParentId(scaledFileId: number): number;
 
         /**
-         * **Returns the number of remaining allowed items that may be submitted for upload based on `validation.itemLimit`.**
+         * Returns the number of remaining allowed items that may be submitted for upload based on `validation.itemLimit`.
          */
         getRemainingAllowedItems(): number;
 
         /**
-         * **Returns an array of potentially resumable items**
+         * Returns an array of potentially resumable items
          * 
          * @returns ResumableFileObject[] : An array of resumable items
          */
         getResumableFilesData(): ResumableFileObject[] | ResumableFileObject;
 
         /**
-         * **Returns the size of the item with the associated id**
+         * Returns the size of the item with the associated id
          * 
          * @param number id : The file id
          * @returns number : The size of the file with the corresponding id
@@ -2109,17 +2099,17 @@ declare namespace FineUploader {
         getSize(id: number): number;
 
         /**
-         * **Return information about all the items that have been submitted to the uploader**
+         * Return information about all the items that have been submitted to the uploader
          * 
          * @param UploadFilter filter : An object which indicates which keys and values must be present in an upload to be returned
          * @return FoundUploadItems | FoundUploadItems [] : A list of items or a single item that has been filtered/found. 
          *                                                  This returns an array only when there is a potential for the operation to return more than one file in the result set.
          *                                                  This excludes queries for a specific, single ID or UUID. All other queries will return an array
          */
-        getUploads(filter: UploadFilter): FoundUploadItems | FoundUploadItems[];
+        getUploads(filter?: UploadFilter): FoundUploadItems | FoundUploadItems[];
 
         /**
-         * **Returns the UUID of the item with the associated id**
+         * Returns the UUID of the item with the associated id
          * 
          * @param number id : The file id
          * @returns string : A level 4 UUID which identifies the corresponding file
@@ -2127,7 +2117,7 @@ declare namespace FineUploader {
         getUuid(id: number): string;
 
         /**
-         * **Output a message to the console, if possible**
+         * Output a message to the console, if possible
          * 
          * @param string message : The message to print
          * @param string level : The level to output the message at
@@ -2135,7 +2125,7 @@ declare namespace FineUploader {
         log(message: string, level?: string): void;
 
         /**
-         * **Attempts to pause an in-progress upload**
+         * Attempts to pause an in-progress upload
          * 
          * @param number id : The file id
          * @returns boolean : `true` if the attempt was successful. `false` otherwise
@@ -2143,19 +2133,19 @@ declare namespace FineUploader {
         pauseUpload(id: number): boolean;
 
         /**
-         * **Reset Fine Uploader**
+         * Reset Fine Uploader
          */
         reset(): void;
 
         /**
-         * **Attempt to upload a specific item again**
+         * Attempt to upload a specific item again
          * 
          * @param number id : The file id
          */
         retry(id: number): void;
 
         /**
-         * **Generates a scaled version of a submitted image file**
+         * Generates a scaled version of a submitted image file
          * 
          * @param number id : The id of the image file
          * @param ScaleImageOptions option : Information about the scaled image to generate
@@ -2165,7 +2155,7 @@ declare namespace FineUploader {
         scaleImage(id: number, options: ScaleImageOptions): Promise<any>;
 
         /**
-         * **Set custom headers for an upload request. Pass in a file id to make the headers specific to that file**
+         * Set custom headers for an upload request. Pass in a file id to make the headers specific to that file
          * 
          * @param any customHeaders : The custom headers to include in the upload request. Fine Uploader may also send some other required headers
          * @param number id : The file id
@@ -2173,7 +2163,7 @@ declare namespace FineUploader {
         setCustomHeaders(customHeaders: any, id?: number): void;
 
         /**
-         * **Modify the location where upload requests should be directed. Pass in a file id to change the endpoint for that specific item**
+         * Modify the location where upload requests should be directed. Pass in a file id to change the endpoint for that specific item
          * 
          * @param string path : A valid URI where upload requests will be sent
          * @param number | HTMLElement identifier : An integer or HTMLElement corresponding to a file
@@ -2181,7 +2171,7 @@ declare namespace FineUploader {
         setEndpoint(path: string, identifier?: number | HTMLElement): void;
 
         /**
-         * **Set custom headers for a delete file request. Pass in a file id to make the headers specific to that file**
+         * Set custom headers for a delete file request. Pass in a file id to make the headers specific to that file
          * 
          * @param any customHeaders : The custom headers to include in the upload request. Fine Uploader may also send some other required headers
          * @param number id : The file id
@@ -2189,7 +2179,7 @@ declare namespace FineUploader {
         setDeleteFileCustomHeaders(customHeaders: any, id?: number): void;
 
         /**
-         * **Modify the location where delete requests should be directed. Pass in a file id to change the endpoint for that specific item**
+         * Modify the location where delete requests should be directed. Pass in a file id to change the endpoint for that specific item
          * 
          * @param string path : A valid URI where delete requests will be sent
          * @param number | HTMLElement identifier : An integer or HTMLElement corresponding to a file
@@ -2197,7 +2187,7 @@ declare namespace FineUploader {
         setDeleteFileEndpoint(path: string, identifier?: number | HTMLElement): void;
 
         /**
-         * **Set the parameters for a delete request. Pass in a file id to make the parameters specific to that file**
+         * Set the parameters for a delete request. Pass in a file id to make the parameters specific to that file
          * 
          * @param any params : The parameters to include in the delete request
          * @param number id : The file id
@@ -2205,21 +2195,21 @@ declare namespace FineUploader {
         setDeleteFileParams(params: any, id?: number): void;
 
         /**
-         * **Change the `validation.itemLimit` option set during construction/initialization**
+         * Change the `validation.itemLimit` option set during construction/initialization
          * 
          * @param number newItemLimit : The new file count limit
          */
         setItemLimit(newItemLimit: number): void;
 
         /**
-         * **Bind a `<form>` to Fine Uploader dynamically**
+         * Bind a `<form>` to Fine Uploader dynamically
          * 
          * @param HTMLFormElement | string formElementOrId : A form element or a form element's ID
          */
         setForm(formElementOrId: HTMLFormElement | string): void;
 
         /**
-         * **Change the name of a file**
+         * Change the name of a file
          * 
          * @param number id: The file id
          * @param string name : The new file name
@@ -2227,7 +2217,7 @@ declare namespace FineUploader {
         setName(id: number, name: string): void;
 
         /**
-         * **Set the parameters for an upload request. Pass in a file id to make the parameters specific to that file**
+         * Set the parameters for an upload request. Pass in a file id to make the parameters specific to that file
          * 
          * @param any params : The parameters to include in the upload request
          * @param number id : The file id
@@ -2235,7 +2225,7 @@ declare namespace FineUploader {
         setParams(params: any, id?: number): void;
 
         /**
-         * **Change the UUID of a file**
+         * Change the UUID of a file
          *          
          * @param number id : The file id
          * @param string uuid : The new file UUID
@@ -2243,21 +2233,21 @@ declare namespace FineUploader {
         setUuid(id: number, uuid: string): void;
 
         /**
-         * **Begin uploading all queued items. Throws a `NoFilesError` if there are no items to upload**
+         * Begin uploading all queued items. Throws a `NoFilesError` if there are no items to upload
          */
         uploadStoredFiles(): void;
 
         /* ======================================= UI METHODS ========================================== */
 
         /**
-         * **Mark `element` as a drop zone**
+         * Mark `element` as a drop zone
          * 
          * @param HTMLElement element : The element to mark as a drop zone
          */
         addExtraDropzone(element: HTMLElement): void;
 
         /**
-         * **Returns the (drop zone) element where the file was dropped. Undefined if drop event was not involved**
+         * Returns the (drop zone) element where the file was dropped. Undefined if drop event was not involved
          * 
          * @param number id : The file id
          * @returns HTMLElement : The drop zone element where the file was dropped
@@ -2265,7 +2255,7 @@ declare namespace FineUploader {
         getDropTarget(id: number): HTMLElement;
 
         /**
-         * **Returns the file `id` associated with an `HTMLElement`**
+         * Returns the file `id` associated with an `HTMLElement`
          * 
          * @param HTMLElement element : Returns the ID of the associated file, given a file container element or a child of a file container element
          * @returns number : the id of the file
@@ -2273,7 +2263,7 @@ declare namespace FineUploader {
         getId(element: HTMLElement): number;
 
         /**
-         * **Returns the `HTMLElement` associated with the file id**
+         * Returns the `HTMLElement` associated with the file id
          * 
          * @param number id : The file id
          * @returns HTMLElement : The `HTMLElement` that is associated with the file id
@@ -2281,7 +2271,7 @@ declare namespace FineUploader {
         getItemByFileId(id: number): HTMLElement;
 
         /**
-         * **Used to un-mark an `element` as a drop zone**
+         * Used to un-mark an `element` as a drop zone
          * 
          * @param HTMLElement element : The element to un-mark as a drop zone
          */
@@ -2291,7 +2281,7 @@ declare namespace FineUploader {
         /* ====================================== UTILITY METHODS ======================================= */
 
         /**
-         * **Selects an HTMLElement and returns a qq 'wrapped object.'**
+         * Selects an HTMLElement and returns a qq 'wrapped object.'
          * 
          * @param HTMLElement element : A HTML element.
          * @returns qq : A wrapped DOM object with a variety of cross-browser shims as methods.
@@ -2315,7 +2305,7 @@ declare namespace FineUploader {
         (element: HTMLElement): qq;
 
         /**
-         * **Returns an array of all immediate children of this element.**
+         * Returns an array of all immediate children of this element.
          * 
          * @param HTMLElement element : An HTMLElement or an already wrapped qq object
          * @returns HTMLElement[] : An array of HTMLElements who are children of the `element` parameter
@@ -2323,7 +2313,7 @@ declare namespace FineUploader {
         children(element: HTMLElement): HTMLElement[];
 
         /**
-         * **Returns true if the element contains the passed element.**
+         * Returns true if the element contains the passed element.
          * 
          * @param HTMLElement element : An HTMLElement or an already wrapped qq object
          * @returns boolean : The result of the contains test
@@ -2331,7 +2321,7 @@ declare namespace FineUploader {
         contains(element: HTMLElement): boolean;
 
         /**
-         * **Returns `true` if the attribute exists on the element and the value of the attribute is not 'false' case-insensitive.**
+         * Returns `true` if the attribute exists on the element and the value of the attribute is not 'false' case-insensitive.
          * 
          * @param string attributeName : An attribute to test for
          * @returns boolean : The result of the `hasAttribute` test
@@ -2339,38 +2329,38 @@ declare namespace FineUploader {
         hasAttribute(attributeName: string): boolean;
 
         /**
-         * **Clears all text for this element**
+         * Clears all text for this element**
          */
         clearText();
 
         /**
-         * **Inserts the element directly before the passed element in the DOM.**
+         * Inserts the element directly before the passed element in the DOM.
          * 
          * @param HTMLElement element : the `element` before which an element has to be inserted
          */
         insertBefore(element: HTMLElement): void;
 
         /**
-         * **Removes the element from the DOM.**
+         * Removes the element from the DOM.
          */
         remove(): void;
 
         /**
-         * **Sets the inner text for this element.**
+         * Sets the inner text for this element.
          * 
          * @param string text : The text to set
          */
         setText(text: string): void;
 
         /**
-         * **Add a class to this element.**
+         * Add a class to this element.
          * 
          * @param string className : The name of the class to add to the element
          */
         addClass(className: string): void;
 
         /**
-         * **Add CSS style(s) to this element.**
+         * Add CSS style(s) to this element.
          * 
          * @param Object styles : An object with styles to apply to this element
          * @returns Object : Returns the current context to allow method chaining
@@ -2378,7 +2368,7 @@ declare namespace FineUploader {
         css(styles: any): qq;
 
         /**
-         * **Returns an array of all descendants of this element that contain a specific class name.**
+         * Returns an array of all descendants of this element that contain a specific class name.
          * 
          * @param string className : The name of the class to look for in each element
          * @returns HTMLElement[] : An array of `HTMLElements
@@ -2386,7 +2376,7 @@ declare namespace FineUploader {
         getByClass(className: string): HTMLElement[];
 
         /**
-         * **Returns `true` if the element has the class name**
+         * Returns `true` if the element has the class name
          * 
          * @param string className : The name of the class to look for in each element
          * @returns boolean : Result of the `hasClass` test
@@ -2394,14 +2384,14 @@ declare namespace FineUploader {
         hasClass(className: string): boolean;
 
         /**
-         * **Hide this element.**
+         * Hide this element.
          * 
          * @returns Object : Returns the current context to allow method chaining
          */
         hide(): qq;
 
         /**
-         * **Remove the provided class from the element.**
+         * Remove the provided class from the element.
          * 
          * @param string className : The name of the class to look for in each element
          * @returns Object : Returns the current context to allow method chaining
@@ -2409,7 +2399,7 @@ declare namespace FineUploader {
         removeClass(className: string): qq;
 
         /**
-         * **Attach an event handler to this element for a specific DOM event.**
+         * Attach an event handler to this element for a specific DOM event.
          * 
          * @param string event : A valid `DOM Event`
          * @param function handler : A function that will be invoked whenever the respective event occurs
@@ -2418,7 +2408,7 @@ declare namespace FineUploader {
         attach(event: string, handler: () => any | void): () => any | void;
 
         /**
-         * **Detach an already attached event handler from this element for a specific DOM event**
+         * Detach an already attached event handler from this element for a specific DOM event
          * 
          * @param string event : A valid `DOM Event`
          * @param function originalHandler : A function that will be detached from this event
@@ -2427,7 +2417,7 @@ declare namespace FineUploader {
         detach(event: string, originalHandler: () => any | void): qq;
 
         /**
-         * **Shim for `Function.prototype.bind`**
+         * Shim for `Function.prototype.bind`
          * 
          * Creates a new function that, when called, has its `this` keyword set to the provided context. 
          * Pass comma-separated values after the `context` parameter for all arguments to be passed into the new function (when invoked). 
@@ -2440,7 +2430,7 @@ declare namespace FineUploader {
         bind(oldFunc: () => any | void, context: any): () => any;
 
         /**
-         * **Iterates through a collection, passing the key and value into the provided callback. `return false;` to stop iteration.**
+         * Iterates through a collection, passing the key and value into the provided callback. `return false;` to stop iteration.
          * 
          * @param Array or Object : 
          * @param function callback : A function that will be called for each item returned by looping through the iterable. This function takes an index and an item.
@@ -2448,7 +2438,7 @@ declare namespace FineUploader {
         each(iterable: any[] | any, callback: (index: number, item: any) => any | void): () => any | void;
 
         /**
-         * **Shallowly copies the parameters of secondobj to firstobj. if extendnested is true then a deep-copy is performed.**
+         * Shallowly copies the parameters of secondobj to firstobj. if extendnested is true then a deep-copy is performed.
          * 
          * @param Object firstObj : The object to copy parameters to
          * @param Object secondObj : The object to copy parameters from
@@ -2458,7 +2448,7 @@ declare namespace FineUploader {
         extend(firstObj: any, secondObj: any, extendNested?: boolean): any;
 
         /**
-         * **Returns a string, swapping argument values with the associated occurrence of `{}` in the passed string**
+         * Returns a string, swapping argument values with the associated occurrence of `{}` in the passed string
          * 
          * @param string message : the string to be formatted 
          * @returns string : the formatted string
@@ -2466,7 +2456,7 @@ declare namespace FineUploader {
         format(message: string): string;
 
         /**
-         * **Return the extension for the filename, if any**
+         * Return the extension for the filename, if any
          * 
          * @param string filename : The file's name to rip the extension off of
          * @returns string : The extension name 
@@ -2474,14 +2464,14 @@ declare namespace FineUploader {
         getExtension(filename: string): string;
 
         /**
-         * **Returns a version4 uuid**
+         * Returns a version4 uuid**
          * 
          * @returns string : A version 4 unique identifier
          */
         getUniqueId(): string;
 
         /**
-         * **Returns the index of `item` in the `Array` starting the search from `startingindex`**
+         * Returns the index of `item` in the `Array` starting the search from `startingindex`
          * 
          * @param any[] array : the array to search in
          * @param Object item : the item to search for
@@ -2491,7 +2481,7 @@ declare namespace FineUploader {
         indexOf(array: any[], item: any, startingIndex?: number): number;
 
         /**
-         * **Check if the parameter is function**
+         * Check if the parameter is function
          * 
          * @param Object func : The object to test
          * @returns boolean : Whether the parameter is a function or not 
@@ -2499,7 +2489,7 @@ declare namespace FineUploader {
         isFunction(func: any): boolean;
 
         /**
-         * **Check if the parameter is object**
+         * Check if the parameter is object
          * 
          * @param Object obj : The thing to test
          * @returns boolean : Whether the parameter is a object or not 
@@ -2507,7 +2497,7 @@ declare namespace FineUploader {
         isObject(obj: any): boolean;
 
         /**
-         * **Check if the parameter is string**
+         * Check if the parameter is string
          * 
          * @param Object str : The object to test
          * @returns boolean : Whether the parameter is a string or not 
@@ -2515,7 +2505,7 @@ declare namespace FineUploader {
         isString(str: any): boolean;
 
         /**
-         * **Log a message to the console. no-op if console logging is not supported. shim for `console.log`**
+         * Log a message to the console. no-op if console logging is not supported. shim for `console.log`
          * 
          * @param string logMessage : The message to log
          * @param string logLevel : The logging level, such as 'warn' and 'info'. If `null`, then 'info' is assumed
@@ -2523,14 +2513,14 @@ declare namespace FineUploader {
         log(logMessage: string, logLevel?: string): void;
 
         /**
-         * **Prevent the browser's default action on an event**
+         * Prevent the browser's default action on an event
          * 
          * @param string event : The name of the default event to prevent
          */
         preventDefault(event: string): void;
 
         /**
-         * **Creates and returns a new <div> element**
+         * Creates and returns a new <div> element
          * 
          * @param string str : Valid HTML that can be parsed by a browser.
          * @returns HTMLElement : An newly created `HTMLElement` from the input
@@ -2538,7 +2528,7 @@ declare namespace FineUploader {
         toElement(str: string): HTMLElement;
 
         /**
-         * **Removes whitespace from the ends of a string. Shim for `String.prototype.trim`**
+         * Removes whitespace from the ends of a string. Shim for `String.prototype.trim`
          * 
          * @param string str : The string to remove whitespace from
          * @returns string : The new string sans whitespace
@@ -2839,7 +2829,7 @@ declare namespace FineUploader {
         /**
          * request options
          */
-        request: S3RequestOptions;
+        request?: S3RequestOptions;
         /**
          * signature options
          */
@@ -2874,7 +2864,7 @@ declare namespace FineUploader {
      */
     interface S3Events extends CoreEvents {
         /**
-         * **Called before a request is sent to S3 if the temporary credentials have expired.**
+         * Called before a request is sent to S3 if the temporary credentials have expired.
          * 
          * You must return a promise. If your attempt to refresh the temporary credentials is successful, you must fulfill the promise via the success method, passing the new credentials object. 
          * Otherwise, call failure with a descriptive reason.
@@ -2883,9 +2873,7 @@ declare namespace FineUploader {
     }
 
     /**
-     * S3UIOptions
-     * Due to multiple interface extension, some of the overloaded options needs to be redefined here.
-     * That is required for successful merging of interfaces and to let compiler know which type should be preferred for members when compiler resolves the conflict
+     * S3UIOptions     
      */
     interface S3UIOptions extends UIOptions, S3CoreOptions {
         /**
@@ -2903,7 +2891,7 @@ declare namespace FineUploader {
         /**
          * request options
          */
-        request: S3RequestOptions;
+        request?: S3RequestOptions;
         /**
          * deleteFile options
          */
@@ -2932,17 +2920,17 @@ declare namespace FineUploader {
     interface S3 extends Core {
 
         /**
-         * **The FineUploader S3 Core only constructor**
+         * The FineUploader S3 Core only constructor**
          */
         FineUploaderBasic(fineuploaderOptions: S3CoreOptions): void;
 
         /**
-         * **The FineUploader S3 Core + UI constructor** 
+         * The FineUploader S3 Core + UI constructor** 
          */
         FineUploader(fineuploaderOptions: S3UIOptions): void;
 
         /**
-         * **Retrieve the S3 bucket name associated with the passed file (id). Note that the bucket name is not available before the file has started uploading**
+         * Retrieve the S3 bucket name associated with the passed file (id). Note that the bucket name is not available before the file has started uploading
          * 
          * @param number fileId : An ID corresponding to a file
          * @returns string : The S3 bucket name associated with the passed file (id)
@@ -2950,7 +2938,7 @@ declare namespace FineUploader {
         getBucket(fileId: number): string;
 
         /**
-         * **Retrieve the S3 object key associated with the passed file (id). Note that the key is not available before the file has started uploading.**
+         * Retrieve the S3 object key associated with the passed file (id). Note that the key is not available before the file has started uploading.
          * 
          * @param number fileId : An ID corresponding to a file
          * @returns string : The S3 object key associated with the passed file (id)
@@ -2958,14 +2946,14 @@ declare namespace FineUploader {
         getKey(fileId: number): string;
 
         /**
-         * **Returns an array of potentially resumable items**
+         * Returns an array of potentially resumable items
          * 
          * @returns S3ResumableFileObject : An array of Resumable file items
          */
         getResumableFilesData(): S3ResumableFileObject[] | S3ResumableFileObject;
 
         /**
-         * **Set/update the ACL to be used for one or all file uploads. If the ID is omitted, the new ACL targets all future files that have not yet been uploaded**
+         * Set/update the ACL to be used for one or all file uploads. If the ID is omitted, the new ACL targets all future files that have not yet been uploaded
          * 
          * @param any newAcl : Canned ACL value to be sent with the upload request. Used by S3
          * @param number id : File ID to target the ACL
@@ -2973,14 +2961,14 @@ declare namespace FineUploader {
         setAcl(newAcl: any, id?: number): void;
 
         /**
-         * **Pass new or initial credentials. This is used to support the no-server workflow**
+         * Pass new or initial credentials. This is used to support the no-server workflow
          * 
          * @param any newCredentials : The new or initial credentials to set for server-less uploads
          */
         setCredentials(newCredentials: any): void;
 
         /**
-         * **Modify the endpoint URL where upload requests should be directed.**
+         * Modify the endpoint URL where upload requests should be directed.
          *  
          * The endpoint for a specific file or blob can be changed by passing in an optional `id` parameter. 
          * An `id` will always be a number and refers to a single file. 
@@ -2994,7 +2982,7 @@ declare namespace FineUploader {
         setEndpoint(endpoint: string, id?: number): void;
 
         /**
-         * **Modify the endpoint that Fine Uploader should POST to when a file has been successfully uploaded to S3**
+         * Modify the endpoint that Fine Uploader should POST to when a file has been successfully uploaded to S3
          * 
          * @param string endpoint : An endpoint that Fine Uploader should POST to when a file has been successfully uploaded to S3
          * @param number id : An ID corresponding to a file
@@ -3002,7 +2990,7 @@ declare namespace FineUploader {
         setUploadSuccessEndpoint(endpoint: string, id?: number): void;
 
         /**
-         * **Set additional parameters for the upload success request.**
+         * Set additional parameters for the upload success request.
          * 
          * ###Note:
          * Fine Uploader will still send the `bucket`, `name`, `key`, `filename`, `UUID`, and `etag` (if available) as well
@@ -3180,7 +3168,7 @@ declare namespace FineUploader {
         /**
          * RequestOptions
          */
-        request: AzureRequestOptions;
+        request?: AzureRequestOptions;
         /**
          * AzureSignatureOptions
          */
@@ -3205,8 +3193,6 @@ declare namespace FineUploader {
 
     /**
      * AzureUIOptions
-     * Due to multiple interface extension, some of the overloaded options needs to be redefined here.
-     * That is required for successful merging of interfaces and to let compiler know which type should be preferred for members when compiler resolves the conflict
      */
     interface AzureUIOptions extends UIOptions, AzureCoreOptions {
         /**
@@ -3245,7 +3231,7 @@ declare namespace FineUploader {
         /**
          * RequestOptions
          */
-        request: AzureRequestOptions;
+        request?: AzureRequestOptions;
 
     }
 
@@ -3255,17 +3241,17 @@ declare namespace FineUploader {
     interface Azure extends Core {
         
         /**
-         * **The FineUploader Azure Core only constructor**
+         * The FineUploader Azure Core only constructor
          */
         FineUploaderBasic(fineuploaderOptions: AzureCoreOptions): void;
 
         /**
-         * **The FineUploader Azure Core + UI constructor** 
+         * The FineUploader Azure Core + UI constructor
          */
         FineUploader(fineuploaderOptions: AzureUIOptions): void;
 
         /**
-         * **Retrieve the blob name with the associated ID**
+         * Retrieve the blob name with the associated ID
          * 
          * @param number : An ID corresponding to a file
          * @returns string : The blob name associated with the file ID
@@ -3273,14 +3259,14 @@ declare namespace FineUploader {
         getBlobName(fileId: number): string;
 
         /**
-         * **Returns an array of potentially resumable items**
+         * Returns an array of potentially resumable items
          * 
          * @returns AzureResumableFileObject : An array of resumable items
          */
         getResumableFilesData(): AzureResumableFileObject[] | AzureResumableFileObject;
 
         /**
-         * **Modify the container URL where upload requests should be directed.**
+         * Modify the container URL where upload requests should be directed.
          *  
          * The endpoint for a specific file or blob can be changed by passing in an optional `id` parameter. 
          * An `id` will always be `a number and refers to a single file.
@@ -3291,7 +3277,7 @@ declare namespace FineUploader {
         setEndpoint(containerUrl: string, id?: number): void;
 
         /**
-         * **Modify the endpoint that Fine Uploader should POST to when a file has been successfully uploaded to Azure Blob Storage.**
+         * Modify the endpoint that Fine Uploader should POST to when a file has been successfully uploaded to Azure Blob Storage.
          * 
          * @param string endpoint : An endpoint that Fine Uploader should POST to when a file has been successfully uploaded to Azure Blob Storage
          * @param number id : An ID corresponding to a file
@@ -3299,7 +3285,7 @@ declare namespace FineUploader {
         setUploadSuccessEndpoint(endpoint: string, id?: number): void;
 
         /**
-         * **Set additional parameters for the upload success request.** 
+         * Set additional parameters for the upload success request. 
          * ###Note: 
          * Fine Uploader will still send the `container URL`, `blob name`, `filename`, and `UUID` as well
          * 
